@@ -9,38 +9,387 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PlatformSetupRouteImport } from './routes/platform-setup'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardWhatsappRouteImport } from './routes/_authenticated/dashboard.whatsapp'
+import { Route as AuthenticatedDashboardUsersRouteImport } from './routes/_authenticated/dashboard.users'
+import { Route as AuthenticatedDashboardTasksRouteImport } from './routes/_authenticated/dashboard.tasks'
+import { Route as AuthenticatedDashboardSuppliersRouteImport } from './routes/_authenticated/dashboard.suppliers'
+import { Route as AuthenticatedDashboardStockReportsRouteImport } from './routes/_authenticated/dashboard.stock-reports'
+import { Route as AuthenticatedDashboardSmsRouteImport } from './routes/_authenticated/dashboard.sms'
+import { Route as AuthenticatedDashboardSalesRouteImport } from './routes/_authenticated/dashboard.sales'
+import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
+import { Route as AuthenticatedDashboardPayrollRouteImport } from './routes/_authenticated/dashboard.payroll'
+import { Route as AuthenticatedDashboardMpesaRouteImport } from './routes/_authenticated/dashboard.mpesa'
+import { Route as AuthenticatedDashboardInventoryRouteImport } from './routes/_authenticated/dashboard.inventory'
+import { Route as AuthenticatedDashboardHrRouteImport } from './routes/_authenticated/dashboard.hr'
+import { Route as AuthenticatedDashboardExpensesRouteImport } from './routes/_authenticated/dashboard.expenses'
+import { Route as AuthenticatedDashboardDebtorsRouteImport } from './routes/_authenticated/dashboard.debtors'
+import { Route as AuthenticatedDashboardCustomersRouteImport } from './routes/_authenticated/dashboard.customers'
+import { Route as AuthenticatedDashboardBranchesRouteImport } from './routes/_authenticated/dashboard.branches'
+import { Route as AuthenticatedDashboardAuditLogsRouteImport } from './routes/_authenticated/dashboard.audit-logs'
+import { Route as AuthenticatedDashboardAssetsRouteImport } from './routes/_authenticated/dashboard.assets'
+import { Route as AuthenticatedDashboardAiAssistantRouteImport } from './routes/_authenticated/dashboard.ai-assistant'
 
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformSetupRoute = PlatformSetupRouteImport.update({
+  id: '/platform-setup',
+  path: '/platform-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardWhatsappRoute =
+  AuthenticatedDashboardWhatsappRouteImport.update({
+    id: '/whatsapp',
+    path: '/whatsapp',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardUsersRoute =
+  AuthenticatedDashboardUsersRouteImport.update({
+    id: '/users',
+    path: '/users',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardTasksRoute =
+  AuthenticatedDashboardTasksRouteImport.update({
+    id: '/tasks',
+    path: '/tasks',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSuppliersRoute =
+  AuthenticatedDashboardSuppliersRouteImport.update({
+    id: '/suppliers',
+    path: '/suppliers',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardStockReportsRoute =
+  AuthenticatedDashboardStockReportsRouteImport.update({
+    id: '/stock-reports',
+    path: '/stock-reports',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSmsRoute =
+  AuthenticatedDashboardSmsRouteImport.update({
+    id: '/sms',
+    path: '/sms',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSalesRoute =
+  AuthenticatedDashboardSalesRouteImport.update({
+    id: '/sales',
+    path: '/sales',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardReportsRoute =
+  AuthenticatedDashboardReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardPayrollRoute =
+  AuthenticatedDashboardPayrollRouteImport.update({
+    id: '/payroll',
+    path: '/payroll',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardMpesaRoute =
+  AuthenticatedDashboardMpesaRouteImport.update({
+    id: '/mpesa',
+    path: '/mpesa',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardInventoryRoute =
+  AuthenticatedDashboardInventoryRouteImport.update({
+    id: '/inventory',
+    path: '/inventory',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardHrRoute =
+  AuthenticatedDashboardHrRouteImport.update({
+    id: '/hr',
+    path: '/hr',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardExpensesRoute =
+  AuthenticatedDashboardExpensesRouteImport.update({
+    id: '/expenses',
+    path: '/expenses',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardDebtorsRoute =
+  AuthenticatedDashboardDebtorsRouteImport.update({
+    id: '/debtors',
+    path: '/debtors',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardCustomersRoute =
+  AuthenticatedDashboardCustomersRouteImport.update({
+    id: '/customers',
+    path: '/customers',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBranchesRoute =
+  AuthenticatedDashboardBranchesRouteImport.update({
+    id: '/branches',
+    path: '/branches',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAuditLogsRoute =
+  AuthenticatedDashboardAuditLogsRouteImport.update({
+    id: '/audit-logs',
+    path: '/audit-logs',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAssetsRoute =
+  AuthenticatedDashboardAssetsRouteImport.update({
+    id: '/assets',
+    path: '/assets',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardAiAssistantRoute =
+  AuthenticatedDashboardAiAssistantRouteImport.update({
+    id: '/ai-assistant',
+    path: '/ai-assistant',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/platform-setup': typeof PlatformSetupRoute
+  '/register': typeof RegisterRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
+  '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
+  '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
+  '/dashboard/customers': typeof AuthenticatedDashboardCustomersRoute
+  '/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
+  '/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
+  '/dashboard/hr': typeof AuthenticatedDashboardHrRoute
+  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
+  '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
+  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
+  '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
+  '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
+  '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
+  '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
+  '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/platform-setup': typeof PlatformSetupRoute
+  '/register': typeof RegisterRoute
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
+  '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
+  '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
+  '/dashboard/customers': typeof AuthenticatedDashboardCustomersRoute
+  '/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
+  '/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
+  '/dashboard/hr': typeof AuthenticatedDashboardHrRoute
+  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
+  '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
+  '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
+  '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
+  '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
+  '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
+  '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
+  '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/platform-setup': typeof PlatformSetupRoute
+  '/register': typeof RegisterRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/_authenticated/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
+  '/_authenticated/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
+  '/_authenticated/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
+  '/_authenticated/dashboard/customers': typeof AuthenticatedDashboardCustomersRoute
+  '/_authenticated/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
+  '/_authenticated/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
+  '/_authenticated/dashboard/hr': typeof AuthenticatedDashboardHrRoute
+  '/_authenticated/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/_authenticated/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
+  '/_authenticated/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
+  '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
+  '/_authenticated/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/_authenticated/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
+  '/_authenticated/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/_authenticated/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
+  '/_authenticated/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
+  '/_authenticated/dashboard/users': typeof AuthenticatedDashboardUsersRoute
+  '/_authenticated/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/platform-setup'
+    | '/register'
+    | '/dashboard'
+    | '/dashboard/ai-assistant'
+    | '/dashboard/assets'
+    | '/dashboard/audit-logs'
+    | '/dashboard/branches'
+    | '/dashboard/customers'
+    | '/dashboard/debtors'
+    | '/dashboard/expenses'
+    | '/dashboard/hr'
+    | '/dashboard/inventory'
+    | '/dashboard/mpesa'
+    | '/dashboard/payroll'
+    | '/dashboard/reports'
+    | '/dashboard/sales'
+    | '/dashboard/sms'
+    | '/dashboard/stock-reports'
+    | '/dashboard/suppliers'
+    | '/dashboard/tasks'
+    | '/dashboard/users'
+    | '/dashboard/whatsapp'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/platform-setup'
+    | '/register'
+    | '/dashboard/ai-assistant'
+    | '/dashboard/assets'
+    | '/dashboard/audit-logs'
+    | '/dashboard/branches'
+    | '/dashboard/customers'
+    | '/dashboard/debtors'
+    | '/dashboard/expenses'
+    | '/dashboard/hr'
+    | '/dashboard/inventory'
+    | '/dashboard/mpesa'
+    | '/dashboard/payroll'
+    | '/dashboard/reports'
+    | '/dashboard/sales'
+    | '/dashboard/sms'
+    | '/dashboard/stock-reports'
+    | '/dashboard/suppliers'
+    | '/dashboard/tasks'
+    | '/dashboard/users'
+    | '/dashboard/whatsapp'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/platform-setup'
+    | '/register'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/dashboard/ai-assistant'
+    | '/_authenticated/dashboard/assets'
+    | '/_authenticated/dashboard/audit-logs'
+    | '/_authenticated/dashboard/branches'
+    | '/_authenticated/dashboard/customers'
+    | '/_authenticated/dashboard/debtors'
+    | '/_authenticated/dashboard/expenses'
+    | '/_authenticated/dashboard/hr'
+    | '/_authenticated/dashboard/inventory'
+    | '/_authenticated/dashboard/mpesa'
+    | '/_authenticated/dashboard/payroll'
+    | '/_authenticated/dashboard/reports'
+    | '/_authenticated/dashboard/sales'
+    | '/_authenticated/dashboard/sms'
+    | '/_authenticated/dashboard/stock-reports'
+    | '/_authenticated/dashboard/suppliers'
+    | '/_authenticated/dashboard/tasks'
+    | '/_authenticated/dashboard/users'
+    | '/_authenticated/dashboard/whatsapp'
+    | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  PlatformSetupRoute: typeof PlatformSetupRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform-setup': {
+      id: '/platform-setup'
+      path: '/platform-setup'
+      fullPath: '/platform-setup'
+      preLoaderRoute: typeof PlatformSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +397,228 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/whatsapp': {
+      id: '/_authenticated/dashboard/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/dashboard/whatsapp'
+      preLoaderRoute: typeof AuthenticatedDashboardWhatsappRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/users': {
+      id: '/_authenticated/dashboard/users'
+      path: '/users'
+      fullPath: '/dashboard/users'
+      preLoaderRoute: typeof AuthenticatedDashboardUsersRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/tasks': {
+      id: '/_authenticated/dashboard/tasks'
+      path: '/tasks'
+      fullPath: '/dashboard/tasks'
+      preLoaderRoute: typeof AuthenticatedDashboardTasksRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/suppliers': {
+      id: '/_authenticated/dashboard/suppliers'
+      path: '/suppliers'
+      fullPath: '/dashboard/suppliers'
+      preLoaderRoute: typeof AuthenticatedDashboardSuppliersRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/stock-reports': {
+      id: '/_authenticated/dashboard/stock-reports'
+      path: '/stock-reports'
+      fullPath: '/dashboard/stock-reports'
+      preLoaderRoute: typeof AuthenticatedDashboardStockReportsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/sms': {
+      id: '/_authenticated/dashboard/sms'
+      path: '/sms'
+      fullPath: '/dashboard/sms'
+      preLoaderRoute: typeof AuthenticatedDashboardSmsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/sales': {
+      id: '/_authenticated/dashboard/sales'
+      path: '/sales'
+      fullPath: '/dashboard/sales'
+      preLoaderRoute: typeof AuthenticatedDashboardSalesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/reports': {
+      id: '/_authenticated/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof AuthenticatedDashboardReportsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/payroll': {
+      id: '/_authenticated/dashboard/payroll'
+      path: '/payroll'
+      fullPath: '/dashboard/payroll'
+      preLoaderRoute: typeof AuthenticatedDashboardPayrollRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/mpesa': {
+      id: '/_authenticated/dashboard/mpesa'
+      path: '/mpesa'
+      fullPath: '/dashboard/mpesa'
+      preLoaderRoute: typeof AuthenticatedDashboardMpesaRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/inventory': {
+      id: '/_authenticated/dashboard/inventory'
+      path: '/inventory'
+      fullPath: '/dashboard/inventory'
+      preLoaderRoute: typeof AuthenticatedDashboardInventoryRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/hr': {
+      id: '/_authenticated/dashboard/hr'
+      path: '/hr'
+      fullPath: '/dashboard/hr'
+      preLoaderRoute: typeof AuthenticatedDashboardHrRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/expenses': {
+      id: '/_authenticated/dashboard/expenses'
+      path: '/expenses'
+      fullPath: '/dashboard/expenses'
+      preLoaderRoute: typeof AuthenticatedDashboardExpensesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/debtors': {
+      id: '/_authenticated/dashboard/debtors'
+      path: '/debtors'
+      fullPath: '/dashboard/debtors'
+      preLoaderRoute: typeof AuthenticatedDashboardDebtorsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/customers': {
+      id: '/_authenticated/dashboard/customers'
+      path: '/customers'
+      fullPath: '/dashboard/customers'
+      preLoaderRoute: typeof AuthenticatedDashboardCustomersRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/branches': {
+      id: '/_authenticated/dashboard/branches'
+      path: '/branches'
+      fullPath: '/dashboard/branches'
+      preLoaderRoute: typeof AuthenticatedDashboardBranchesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/audit-logs': {
+      id: '/_authenticated/dashboard/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/dashboard/audit-logs'
+      preLoaderRoute: typeof AuthenticatedDashboardAuditLogsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/assets': {
+      id: '/_authenticated/dashboard/assets'
+      path: '/assets'
+      fullPath: '/dashboard/assets'
+      preLoaderRoute: typeof AuthenticatedDashboardAssetsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/dashboard/ai-assistant': {
+      id: '/_authenticated/dashboard/ai-assistant'
+      path: '/ai-assistant'
+      fullPath: '/dashboard/ai-assistant'
+      preLoaderRoute: typeof AuthenticatedDashboardAiAssistantRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
   }
 }
 
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRoute
+  AuthenticatedDashboardAssetsRoute: typeof AuthenticatedDashboardAssetsRoute
+  AuthenticatedDashboardAuditLogsRoute: typeof AuthenticatedDashboardAuditLogsRoute
+  AuthenticatedDashboardBranchesRoute: typeof AuthenticatedDashboardBranchesRoute
+  AuthenticatedDashboardCustomersRoute: typeof AuthenticatedDashboardCustomersRoute
+  AuthenticatedDashboardDebtorsRoute: typeof AuthenticatedDashboardDebtorsRoute
+  AuthenticatedDashboardExpensesRoute: typeof AuthenticatedDashboardExpensesRoute
+  AuthenticatedDashboardHrRoute: typeof AuthenticatedDashboardHrRoute
+  AuthenticatedDashboardInventoryRoute: typeof AuthenticatedDashboardInventoryRoute
+  AuthenticatedDashboardMpesaRoute: typeof AuthenticatedDashboardMpesaRoute
+  AuthenticatedDashboardPayrollRoute: typeof AuthenticatedDashboardPayrollRoute
+  AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
+  AuthenticatedDashboardSalesRoute: typeof AuthenticatedDashboardSalesRoute
+  AuthenticatedDashboardSmsRoute: typeof AuthenticatedDashboardSmsRoute
+  AuthenticatedDashboardStockReportsRoute: typeof AuthenticatedDashboardStockReportsRoute
+  AuthenticatedDashboardSuppliersRoute: typeof AuthenticatedDashboardSuppliersRoute
+  AuthenticatedDashboardTasksRoute: typeof AuthenticatedDashboardTasksRoute
+  AuthenticatedDashboardUsersRoute: typeof AuthenticatedDashboardUsersRoute
+  AuthenticatedDashboardWhatsappRoute: typeof AuthenticatedDashboardWhatsappRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardAiAssistantRoute:
+      AuthenticatedDashboardAiAssistantRoute,
+    AuthenticatedDashboardAssetsRoute: AuthenticatedDashboardAssetsRoute,
+    AuthenticatedDashboardAuditLogsRoute: AuthenticatedDashboardAuditLogsRoute,
+    AuthenticatedDashboardBranchesRoute: AuthenticatedDashboardBranchesRoute,
+    AuthenticatedDashboardCustomersRoute: AuthenticatedDashboardCustomersRoute,
+    AuthenticatedDashboardDebtorsRoute: AuthenticatedDashboardDebtorsRoute,
+    AuthenticatedDashboardExpensesRoute: AuthenticatedDashboardExpensesRoute,
+    AuthenticatedDashboardHrRoute: AuthenticatedDashboardHrRoute,
+    AuthenticatedDashboardInventoryRoute: AuthenticatedDashboardInventoryRoute,
+    AuthenticatedDashboardMpesaRoute: AuthenticatedDashboardMpesaRoute,
+    AuthenticatedDashboardPayrollRoute: AuthenticatedDashboardPayrollRoute,
+    AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
+    AuthenticatedDashboardSalesRoute: AuthenticatedDashboardSalesRoute,
+    AuthenticatedDashboardSmsRoute: AuthenticatedDashboardSmsRoute,
+    AuthenticatedDashboardStockReportsRoute:
+      AuthenticatedDashboardStockReportsRoute,
+    AuthenticatedDashboardSuppliersRoute: AuthenticatedDashboardSuppliersRoute,
+    AuthenticatedDashboardTasksRoute: AuthenticatedDashboardTasksRoute,
+    AuthenticatedDashboardUsersRoute: AuthenticatedDashboardUsersRoute,
+    AuthenticatedDashboardWhatsappRoute: AuthenticatedDashboardWhatsappRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  }
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  PlatformSetupRoute: PlatformSetupRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
