@@ -61,8 +61,8 @@ function Reports() {
               <XAxis dataKey="month" fontSize={12} />
               <YAxis fontSize={12} />
               <Tooltip />
-              <Bar dataKey="sales" fill="hsl(var(--primary))" radius={[4,4,0,0]} />
-              <Bar dataKey="expenses" fill="hsl(var(--destructive))" radius={[4,4,0,0]} />
+              <Bar dataKey="sales" fill="var(--color-primary)" radius={[4,4,0,0]} />
+              <Bar dataKey="expenses" fill="var(--color-destructive)" radius={[4,4,0,0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
