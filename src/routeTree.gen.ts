@@ -14,8 +14,12 @@ import { Route as PlatformSetupRouteImport } from './routes/platform-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedPlatformIndexRouteImport } from './routes/_authenticated/platform.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedPlatformTenantsRouteImport } from './routes/_authenticated/platform.tenants'
+import { Route as AuthenticatedPlatformRequestsRouteImport } from './routes/_authenticated/platform.requests'
 import { Route as AuthenticatedDashboardWhatsappRouteImport } from './routes/_authenticated/dashboard.whatsapp'
 import { Route as AuthenticatedDashboardUsersRouteImport } from './routes/_authenticated/dashboard.users'
 import { Route as AuthenticatedDashboardTasksRouteImport } from './routes/_authenticated/dashboard.tasks'
@@ -60,16 +64,39 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPlatformIndexRoute =
+  AuthenticatedPlatformIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedPlatformTenantsRoute =
+  AuthenticatedPlatformTenantsRouteImport.update({
+    id: '/tenants',
+    path: '/tenants',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
+const AuthenticatedPlatformRequestsRoute =
+  AuthenticatedPlatformRequestsRouteImport.update({
+    id: '/requests',
+    path: '/requests',
+    getParentRoute: () => AuthenticatedPlatformRoute,
   } as any)
 const AuthenticatedDashboardWhatsappRoute =
   AuthenticatedDashboardWhatsappRouteImport.update({
@@ -192,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/platform-setup': typeof PlatformSetupRoute
   '/register': typeof RegisterRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/platform': typeof AuthenticatedPlatformRouteWithChildren
   '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
@@ -211,7 +239,10 @@ export interface FileRoutesByFullPath {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/platform/': typeof AuthenticatedPlatformIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -237,7 +268,10 @@ export interface FileRoutesByTo {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
+  '/platform': typeof AuthenticatedPlatformIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -247,6 +281,7 @@ export interface FileRoutesById {
   '/platform-setup': typeof PlatformSetupRoute
   '/register': typeof RegisterRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/platform': typeof AuthenticatedPlatformRouteWithChildren
   '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
   '/_authenticated/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/_authenticated/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
@@ -266,7 +301,10 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/_authenticated/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/_authenticated/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/_authenticated/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/_authenticated/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
+  '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -276,6 +314,7 @@ export interface FileRouteTypes {
     | '/platform-setup'
     | '/register'
     | '/dashboard'
+    | '/platform'
     | '/dashboard/ai-assistant'
     | '/dashboard/assets'
     | '/dashboard/audit-logs'
@@ -295,7 +334,10 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/requests'
+    | '/platform/tenants'
     | '/dashboard/'
+    | '/platform/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -321,7 +363,10 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/requests'
+    | '/platform/tenants'
     | '/dashboard'
+    | '/platform'
   id:
     | '__root__'
     | '/'
@@ -330,6 +375,7 @@ export interface FileRouteTypes {
     | '/platform-setup'
     | '/register'
     | '/_authenticated/dashboard'
+    | '/_authenticated/platform'
     | '/_authenticated/dashboard/ai-assistant'
     | '/_authenticated/dashboard/assets'
     | '/_authenticated/dashboard/audit-logs'
@@ -349,7 +395,10 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/tasks'
     | '/_authenticated/dashboard/users'
     | '/_authenticated/dashboard/whatsapp'
+    | '/_authenticated/platform/requests'
+    | '/_authenticated/platform/tenants'
     | '/_authenticated/dashboard/'
+    | '/_authenticated/platform/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -397,6 +446,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/platform': {
+      id: '/_authenticated/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof AuthenticatedPlatformRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -404,12 +460,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/platform/': {
+      id: '/_authenticated/platform/'
+      path: '/'
+      fullPath: '/platform/'
+      preLoaderRoute: typeof AuthenticatedPlatformIndexRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
       path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
+    }
+    '/_authenticated/platform/tenants': {
+      id: '/_authenticated/platform/tenants'
+      path: '/tenants'
+      fullPath: '/platform/tenants'
+      preLoaderRoute: typeof AuthenticatedPlatformTenantsRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
+    '/_authenticated/platform/requests': {
+      id: '/_authenticated/platform/requests'
+      path: '/requests'
+      fullPath: '/platform/requests'
+      preLoaderRoute: typeof AuthenticatedPlatformRequestsRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
     }
     '/_authenticated/dashboard/whatsapp': {
       id: '/_authenticated/dashboard/whatsapp'
@@ -601,12 +678,31 @@ const AuthenticatedDashboardRouteWithChildren =
     AuthenticatedDashboardRouteChildren,
   )
 
+interface AuthenticatedPlatformRouteChildren {
+  AuthenticatedPlatformRequestsRoute: typeof AuthenticatedPlatformRequestsRoute
+  AuthenticatedPlatformTenantsRoute: typeof AuthenticatedPlatformTenantsRoute
+  AuthenticatedPlatformIndexRoute: typeof AuthenticatedPlatformIndexRoute
+}
+
+const AuthenticatedPlatformRouteChildren: AuthenticatedPlatformRouteChildren = {
+  AuthenticatedPlatformRequestsRoute: AuthenticatedPlatformRequestsRoute,
+  AuthenticatedPlatformTenantsRoute: AuthenticatedPlatformTenantsRoute,
+  AuthenticatedPlatformIndexRoute: AuthenticatedPlatformIndexRoute,
+}
+
+const AuthenticatedPlatformRouteWithChildren =
+  AuthenticatedPlatformRoute._addFileChildren(
+    AuthenticatedPlatformRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedPlatformRoute: typeof AuthenticatedPlatformRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
+  AuthenticatedPlatformRoute: AuthenticatedPlatformRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
