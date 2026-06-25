@@ -273,6 +273,35 @@ export type Database = {
           },
         ]
       }
+      expense_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expense_categories_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       expenses: {
         Row: {
           amount: number
@@ -282,7 +311,16 @@ export type Database = {
           description: string | null
           expense_date: string
           id: string
+          payment_method: string | null
+          receipt_url: string | null
+          recurrence: string
+          status: string
           tenant_id: string
+          title: string | null
+          updated_at: string
+          vendor_email: string | null
+          vendor_name: string | null
+          vendor_phone: string | null
         }
         Insert: {
           amount: number
@@ -292,7 +330,16 @@ export type Database = {
           description?: string | null
           expense_date?: string
           id?: string
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence?: string
+          status?: string
           tenant_id: string
+          title?: string | null
+          updated_at?: string
+          vendor_email?: string | null
+          vendor_name?: string | null
+          vendor_phone?: string | null
         }
         Update: {
           amount?: number
@@ -302,7 +349,16 @@ export type Database = {
           description?: string | null
           expense_date?: string
           id?: string
+          payment_method?: string | null
+          receipt_url?: string | null
+          recurrence?: string
+          status?: string
           tenant_id?: string
+          title?: string | null
+          updated_at?: string
+          vendor_email?: string | null
+          vendor_name?: string | null
+          vendor_phone?: string | null
         }
         Relationships: [
           {
@@ -383,39 +439,92 @@ export type Database = {
         }
         Relationships: []
       }
-      products: {
+      product_categories: {
         Row: {
-          cost: number | null
           created_at: string
           id: string
+          name: string
+          tenant_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          tenant_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_categories_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          barcode: string | null
+          category: string | null
+          cost: number | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_service: boolean
           name: string
           price: number
           reorder_level: number | null
           sku: string | null
+          status: string
           stock_quantity: number
           tenant_id: string
+          updated_at: string
         }
         Insert: {
+          barcode?: string | null
+          category?: string | null
           cost?: number | null
           created_at?: string
+          created_by?: string | null
+          description?: string | null
           id?: string
+          image_url?: string | null
+          is_service?: boolean
           name: string
           price?: number
           reorder_level?: number | null
           sku?: string | null
+          status?: string
           stock_quantity?: number
           tenant_id: string
+          updated_at?: string
         }
         Update: {
+          barcode?: string | null
+          category?: string | null
           cost?: number | null
           created_at?: string
+          created_by?: string | null
+          description?: string | null
           id?: string
+          image_url?: string | null
+          is_service?: boolean
           name?: string
           price?: number
           reorder_level?: number | null
           sku?: string | null
+          status?: string
           stock_quantity?: number
           tenant_id?: string
+          updated_at?: string
         }
         Relationships: [
           {
@@ -462,39 +571,139 @@ export type Database = {
           },
         ]
       }
-      sales: {
+      sale_items: {
         Row: {
           created_at: string
-          created_by: string | null
-          customer_id: string | null
+          description: string
+          discount: number
           id: string
+          is_service: boolean
+          line_total: number
           notes: string | null
-          payment_method: string | null
-          status: string | null
+          product_id: string | null
+          quantity: number
+          sale_id: string
+          staff_id: string | null
           tenant_id: string
-          total_amount: number
+          unit_price: number
         }
         Insert: {
           created_at?: string
-          created_by?: string | null
-          customer_id?: string | null
+          description: string
+          discount?: number
           id?: string
+          is_service?: boolean
+          line_total?: number
           notes?: string | null
-          payment_method?: string | null
-          status?: string | null
+          product_id?: string | null
+          quantity?: number
+          sale_id: string
+          staff_id?: string | null
           tenant_id: string
-          total_amount?: number
+          unit_price?: number
         }
         Update: {
           created_at?: string
+          description?: string
+          discount?: number
+          id?: string
+          is_service?: boolean
+          line_total?: number
+          notes?: string | null
+          product_id?: string | null
+          quantity?: number
+          sale_id?: string
+          staff_id?: string | null
+          tenant_id?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sale_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_items_sale_id_fkey"
+            columns: ["sale_id"]
+            isOneToOne: false
+            referencedRelation: "sales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "sale_items_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sales: {
+        Row: {
+          amount_received: number
+          balance: number
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          customer_name: string | null
+          customer_phone: string | null
+          discount: number
+          id: string
+          notes: string | null
+          payment_method: string | null
+          sale_date: string
+          sale_type: string
+          status: string | null
+          subtotal: number
+          tax: number
+          tenant_id: string
+          total_amount: number
+          updated_at: string
+        }
+        Insert: {
+          amount_received?: number
+          balance?: number
+          created_at?: string
           created_by?: string | null
           customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount?: number
           id?: string
           notes?: string | null
           payment_method?: string | null
+          sale_date?: string
+          sale_type?: string
           status?: string | null
+          subtotal?: number
+          tax?: number
+          tenant_id: string
+          total_amount?: number
+          updated_at?: string
+        }
+        Update: {
+          amount_received?: number
+          balance?: number
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          customer_name?: string | null
+          customer_phone?: string | null
+          discount?: number
+          id?: string
+          notes?: string | null
+          payment_method?: string | null
+          sale_date?: string
+          sale_type?: string
+          status?: string | null
+          subtotal?: number
+          tax?: number
           tenant_id?: string
           total_amount?: number
+          updated_at?: string
         }
         Relationships: [
           {
@@ -506,6 +715,60 @@ export type Database = {
           },
           {
             foreignKeyName: "sales_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_movements: {
+        Row: {
+          change: number
+          created_at: string
+          created_by: string | null
+          id: string
+          notes: string | null
+          product_id: string
+          reason: string
+          reference_id: string | null
+          reference_type: string | null
+          tenant_id: string
+        }
+        Insert: {
+          change: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          product_id: string
+          reason: string
+          reference_id?: string | null
+          reference_type?: string | null
+          tenant_id: string
+        }
+        Update: {
+          change?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          notes?: string | null
+          product_id?: string
+          reason?: string
+          reference_id?: string | null
+          reference_type?: string | null
+          tenant_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_tenant_id_fkey"
             columns: ["tenant_id"]
             isOneToOne: false
             referencedRelation: "tenants"
@@ -716,6 +979,15 @@ export type Database = {
         Args: { _email: string; _role: Database["public"]["Enums"]["app_role"] }
         Returns: string
       }
+      adjust_stock: {
+        Args: {
+          _change: number
+          _notes: string
+          _product_id: string
+          _reason: string
+        }
+        Returns: undefined
+      }
       bootstrap_super_admin: { Args: never; Returns: boolean }
       get_my_tenant_id: { Args: never; Returns: string }
       has_role: {
@@ -734,6 +1006,7 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      record_sale: { Args: { _payload: Json }; Returns: string }
       register_tenant: {
         Args: {
           _business_name: string
