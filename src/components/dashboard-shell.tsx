@@ -3,21 +3,21 @@ import { useAuth } from "@/lib/auth-context";
 import {
   LayoutDashboard, ShoppingCart, Wallet, Users, BarChart3, Package, HandCoins,
   Truck, FileBarChart, UserCog, Banknote, Building2, ListChecks, Smartphone,
-  MessageSquare, Bot, GitBranch, Shield, ScrollText, LogOut, ChevronDown,
+  MessageSquare, Bot, GitBranch, Shield, ScrollText, LogOut, ChevronDown, CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
-interface NavItem { to: string; label: string; icon: any; feature?: string; adminOnly?: boolean; }
+interface NavItem { to: string; label: string; icon: any; feature?: string; anyFeature?: string[]; adminOnly?: boolean; }
 
 const NAV: NavItem[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard },
   { to: "/dashboard/sales", label: "Sales", icon: ShoppingCart, feature: "sales" },
+  { to: "/dashboard/inventory", label: "Products", icon: Package, anyFeature: ["products", "inventory", "inventory_basic"] },
   { to: "/dashboard/expenses", label: "Expenses", icon: Wallet, feature: "expenses" },
   { to: "/dashboard/customers", label: "Customers", icon: Users, feature: "customers" },
   { to: "/dashboard/reports", label: "Reports", icon: BarChart3, feature: "reports" },
-  { to: "/dashboard/inventory", label: "Inventory", icon: Package, feature: "inventory" },
   { to: "/dashboard/debtors", label: "Debtors", icon: HandCoins, feature: "debtors" },
   { to: "/dashboard/suppliers", label: "Suppliers", icon: Truck, feature: "suppliers" },
   { to: "/dashboard/stock-reports", label: "Stock Reports", icon: FileBarChart, feature: "stock_reports" },
@@ -30,6 +30,7 @@ const NAV: NavItem[] = [
   { to: "/dashboard/whatsapp", label: "WhatsApp", icon: MessageSquare, feature: "whatsapp" },
   { to: "/dashboard/ai-assistant", label: "AI Assistant", icon: Bot, feature: "ai_assistant" },
   { to: "/dashboard/branches", label: "Branches", icon: GitBranch, feature: "multi_branch" },
+  { to: "/dashboard/subscription", label: "Subscription", icon: CreditCard },
 ];
 
 const ADMIN_NAV: NavItem[] = [
@@ -43,7 +44,12 @@ export function DashboardShell() {
   const pathname = useRouterState({ select: s => s.location.pathname });
   const [open, setOpen] = useState(false);
 
-  const visibleNav = NAV.filter(i => !i.feature || hasFeature(i.feature) || isPlatformAdmin);
+  const visibleNav = NAV.filter(i => {
+    if (isPlatformAdmin) return true;
+    if (i.feature) return hasFeature(i.feature);
+    if (i.anyFeature) return i.anyFeature.some(f => hasFeature(f));
+    return true;
+  });
   const visibleAdminNav = (isTenantAdmin || isPlatformAdmin) ? ADMIN_NAV : [];
 
   return (

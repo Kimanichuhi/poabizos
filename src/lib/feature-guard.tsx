@@ -1,22 +1,30 @@
 import { Link } from "@tanstack/react-router";
 import { useAuth } from "./auth-context";
 import type { ReactNode } from "react";
-import { Lock } from "lucide-react";
+import { Lock, ArrowUpRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function FeatureGuard({ featureKey, children }: { featureKey: string; children: ReactNode }) {
-  const { hasFeature, tenant, isPlatformAdmin } = useAuth();
+  const { hasFeature, packageInfo, isPlatformAdmin, packageForFeature } = useAuth();
   if (isPlatformAdmin) return <>{children}</>;
   if (hasFeature(featureKey)) return <>{children}</>;
+
+  const required = packageForFeature(featureKey);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8">
       <div className="rounded-full bg-muted p-4 mb-4"><Lock className="h-8 w-8 text-muted-foreground" /></div>
-      <h2 className="text-xl font-semibold">Feature not in your plan</h2>
+      <h2 className="text-xl font-semibold">Feature locked</h2>
       <p className="text-muted-foreground mt-2 max-w-md">
-        The <span className="font-mono text-foreground">{featureKey}</span> module isn't available on the{" "}
-        <span className="font-semibold">{tenant?.subscription_plan ?? "current"}</span> plan.
-        Upgrade to unlock it.
+        {required
+          ? <>This feature is available in the <span className="font-semibold text-foreground">{required.name}</span> package.</>
+          : <>This feature isn't available on your current package.</>}
+        {packageInfo && <> You're currently on <span className="font-semibold text-foreground">{packageInfo.package_name}</span>.</>}
       </p>
-      <Link to="/dashboard" className="mt-6 text-primary hover:underline">← Back to dashboard</Link>
+      <div className="flex gap-2 mt-6">
+        <Button asChild><Link to="/dashboard/subscription">Upgrade Package <ArrowUpRight className="h-4 w-4 ml-1" /></Link></Button>
+        <Button asChild variant="outline"><Link to="/dashboard">Back to dashboard</Link></Button>
+      </div>
     </div>
   );
 }
