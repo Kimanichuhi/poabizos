@@ -370,6 +370,69 @@ export type Database = {
           },
         ]
       }
+      features: {
+        Row: {
+          created_at: string
+          description: string | null
+          feature_key: string
+          feature_name: string
+          id: string
+          module: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          feature_key: string
+          feature_name: string
+          id?: string
+          module?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          feature_key?: string
+          feature_name?: string
+          id?: string
+          module?: string | null
+        }
+        Relationships: []
+      }
+      package_features: {
+        Row: {
+          created_at: string
+          feature_id: string
+          id: string
+          package_id: string
+        }
+        Insert: {
+          created_at?: string
+          feature_id: string
+          id?: string
+          package_id: string
+        }
+        Update: {
+          created_at?: string
+          feature_id?: string
+          id?: string
+          package_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "package_features_feature_id_fkey"
+            columns: ["feature_id"]
+            isOneToOne: false
+            referencedRelation: "features"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "package_features_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_packages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payrolls: {
         Row: {
           created_at: string
@@ -421,24 +484,6 @@ export type Database = {
           },
         ]
       }
-      plan_features: {
-        Row: {
-          feature_key: string
-          id: string
-          plan_name: Database["public"]["Enums"]["subscription_plan"]
-        }
-        Insert: {
-          feature_key: string
-          id?: string
-          plan_name: Database["public"]["Enums"]["subscription_plan"]
-        }
-        Update: {
-          feature_key?: string
-          id?: string
-          plan_name?: Database["public"]["Enums"]["subscription_plan"]
-        }
-        Relationships: []
-      }
       product_categories: {
         Row: {
           created_at: string
@@ -470,7 +515,9 @@ export type Database = {
       }
       products: {
         Row: {
+          archived_at: string | null
           barcode: string | null
+          brand: string | null
           category: string | null
           cost: number | null
           created_at: string
@@ -486,10 +533,13 @@ export type Database = {
           status: string
           stock_quantity: number
           tenant_id: string
+          unit: string | null
           updated_at: string
         }
         Insert: {
+          archived_at?: string | null
           barcode?: string | null
+          brand?: string | null
           category?: string | null
           cost?: number | null
           created_at?: string
@@ -505,10 +555,13 @@ export type Database = {
           status?: string
           stock_quantity?: number
           tenant_id: string
+          unit?: string | null
           updated_at?: string
         }
         Update: {
+          archived_at?: string | null
           barcode?: string | null
+          brand?: string | null
           category?: string | null
           cost?: number | null
           created_at?: string
@@ -524,6 +577,7 @@ export type Database = {
           status?: string
           stock_quantity?: number
           tenant_id?: string
+          unit?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -776,6 +830,48 @@ export type Database = {
           },
         ]
       }
+      subscription_packages: {
+        Row: {
+          created_at: string
+          currency: string
+          description: string | null
+          id: string
+          is_active: boolean
+          monthly_price: number
+          package_code: string
+          package_name: string
+          sort_order: number
+          updated_at: string
+          user_limit: number | null
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          monthly_price?: number
+          package_code: string
+          package_name: string
+          sort_order?: number
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          monthly_price?: number
+          package_code?: string
+          package_name?: string
+          sort_order?: number
+          updated_at?: string
+          user_limit?: number | null
+        }
+        Relationships: []
+      }
       suppliers: {
         Row: {
           address: string | null
@@ -902,6 +998,57 @@ export type Database = {
           },
         ]
       }
+      tenant_subscriptions: {
+        Row: {
+          auto_renew: boolean
+          created_at: string
+          expiry_date: string | null
+          id: string
+          package_id: string
+          start_date: string
+          status: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          auto_renew?: boolean
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          package_id: string
+          start_date?: string
+          status?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          auto_renew?: boolean
+          created_at?: string
+          expiry_date?: string | null
+          id?: string
+          package_id?: string
+          start_date?: string
+          status?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_subscriptions_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_subscriptions_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           business_name: string
@@ -972,7 +1119,13 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      plan_features: {
+        Row: {
+          feature_key: string | null
+          plan_name: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_user_to_tenant: {
@@ -989,7 +1142,17 @@ export type Database = {
         Returns: undefined
       }
       bootstrap_super_admin: { Args: never; Returns: boolean }
+      change_tenant_package: {
+        Args: { _package_code: string }
+        Returns: string
+      }
       get_my_tenant_id: { Args: never; Returns: string }
+      get_tenant_features: {
+        Args: { _tenant_id: string }
+        Returns: {
+          feature_key: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
