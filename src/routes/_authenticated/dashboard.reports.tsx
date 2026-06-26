@@ -109,8 +109,8 @@ function ReportsPage() {
 
   const totalSales = sales.reduce((s: number, r: any) => s + Number(r.total_amount ?? 0), 0);
   const totalExpenses = expenses.reduce((s: number, r: any) => s + Number(r.amount ?? 0), 0);
-  const totalInventoryValue = inventorySummary.reduce((s, r) => s + Number(r.value ?? 0), 0);
-  const lowStock = inventorySummary.filter(r => r.status === "Low Stock" || r.status === "Out of Stock");
+  const totalInventoryValue = inventorySummary.reduce((s: number, r: any) => s + Number(r.value ?? 0), 0);
+  const lowStock = inventorySummary.filter((r: any) => r.status === "Low Stock" || r.status === "Out of Stock");
   const bestSelling = productSales.slice(0, 10);
   const leastSelling = [...productSales].reverse().slice(0, 10);
 
