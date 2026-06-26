@@ -24,6 +24,7 @@ import { Route as AuthenticatedDashboardWhatsappRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardUsersRouteImport } from './routes/_authenticated/dashboard.users'
 import { Route as AuthenticatedDashboardTasksRouteImport } from './routes/_authenticated/dashboard.tasks'
 import { Route as AuthenticatedDashboardSuppliersRouteImport } from './routes/_authenticated/dashboard.suppliers'
+import { Route as AuthenticatedDashboardSubscriptionRouteImport } from './routes/_authenticated/dashboard.subscription'
 import { Route as AuthenticatedDashboardStockReportsRouteImport } from './routes/_authenticated/dashboard.stock-reports'
 import { Route as AuthenticatedDashboardSmsRouteImport } from './routes/_authenticated/dashboard.sms'
 import { Route as AuthenticatedDashboardSalesRouteImport } from './routes/_authenticated/dashboard.sales'
@@ -39,6 +40,7 @@ import { Route as AuthenticatedDashboardBranchesRouteImport } from './routes/_au
 import { Route as AuthenticatedDashboardAuditLogsRouteImport } from './routes/_authenticated/dashboard.audit-logs'
 import { Route as AuthenticatedDashboardAssetsRouteImport } from './routes/_authenticated/dashboard.assets'
 import { Route as AuthenticatedDashboardAiAssistantRouteImport } from './routes/_authenticated/dashboard.ai-assistant'
+import { Route as AuthenticatedDashboardInventoryProductIdRouteImport } from './routes/_authenticated/dashboard.inventory.$productId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -120,6 +122,12 @@ const AuthenticatedDashboardSuppliersRoute =
   AuthenticatedDashboardSuppliersRouteImport.update({
     id: '/suppliers',
     path: '/suppliers',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardSubscriptionRoute =
+  AuthenticatedDashboardSubscriptionRouteImport.update({
+    id: '/subscription',
+    path: '/subscription',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 const AuthenticatedDashboardStockReportsRoute =
@@ -212,6 +220,12 @@ const AuthenticatedDashboardAiAssistantRoute =
     path: '/ai-assistant',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardInventoryProductIdRoute =
+  AuthenticatedDashboardInventoryProductIdRouteImport.update({
+    id: '/$productId',
+    path: '/$productId',
+    getParentRoute: () => AuthenticatedDashboardInventoryRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -228,13 +242,14 @@ export interface FileRoutesByFullPath {
   '/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
   '/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
   '/dashboard/hr': typeof AuthenticatedDashboardHrRoute
-  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRouteWithChildren
   '/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
   '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
   '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
   '/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
@@ -243,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -257,13 +273,14 @@ export interface FileRoutesByTo {
   '/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
   '/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
   '/dashboard/hr': typeof AuthenticatedDashboardHrRoute
-  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/dashboard/inventory': typeof AuthenticatedDashboardInventoryRouteWithChildren
   '/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
   '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
   '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
   '/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
@@ -272,6 +289,7 @@ export interface FileRoutesByTo {
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/platform': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -290,13 +308,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/debtors': typeof AuthenticatedDashboardDebtorsRoute
   '/_authenticated/dashboard/expenses': typeof AuthenticatedDashboardExpensesRoute
   '/_authenticated/dashboard/hr': typeof AuthenticatedDashboardHrRoute
-  '/_authenticated/dashboard/inventory': typeof AuthenticatedDashboardInventoryRoute
+  '/_authenticated/dashboard/inventory': typeof AuthenticatedDashboardInventoryRouteWithChildren
   '/_authenticated/dashboard/mpesa': typeof AuthenticatedDashboardMpesaRoute
   '/_authenticated/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
   '/_authenticated/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/_authenticated/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
+  '/_authenticated/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
   '/_authenticated/dashboard/suppliers': typeof AuthenticatedDashboardSuppliersRoute
   '/_authenticated/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/_authenticated/dashboard/users': typeof AuthenticatedDashboardUsersRoute
@@ -305,6 +324,7 @@ export interface FileRoutesById {
   '/_authenticated/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/_authenticated/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -330,6 +350,7 @@ export interface FileRouteTypes {
     | '/dashboard/sales'
     | '/dashboard/sms'
     | '/dashboard/stock-reports'
+    | '/dashboard/subscription'
     | '/dashboard/suppliers'
     | '/dashboard/tasks'
     | '/dashboard/users'
@@ -338,6 +359,7 @@ export interface FileRouteTypes {
     | '/platform/tenants'
     | '/dashboard/'
     | '/platform/'
+    | '/dashboard/inventory/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -359,6 +381,7 @@ export interface FileRouteTypes {
     | '/dashboard/sales'
     | '/dashboard/sms'
     | '/dashboard/stock-reports'
+    | '/dashboard/subscription'
     | '/dashboard/suppliers'
     | '/dashboard/tasks'
     | '/dashboard/users'
@@ -367,6 +390,7 @@ export interface FileRouteTypes {
     | '/platform/tenants'
     | '/dashboard'
     | '/platform'
+    | '/dashboard/inventory/$productId'
   id:
     | '__root__'
     | '/'
@@ -391,6 +415,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/sales'
     | '/_authenticated/dashboard/sms'
     | '/_authenticated/dashboard/stock-reports'
+    | '/_authenticated/dashboard/subscription'
     | '/_authenticated/dashboard/suppliers'
     | '/_authenticated/dashboard/tasks'
     | '/_authenticated/dashboard/users'
@@ -399,6 +424,7 @@ export interface FileRouteTypes {
     | '/_authenticated/platform/tenants'
     | '/_authenticated/dashboard/'
     | '/_authenticated/platform/'
+    | '/_authenticated/dashboard/inventory/$productId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -516,6 +542,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardSuppliersRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/subscription': {
+      id: '/_authenticated/dashboard/subscription'
+      path: '/subscription'
+      fullPath: '/dashboard/subscription'
+      preLoaderRoute: typeof AuthenticatedDashboardSubscriptionRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/stock-reports': {
       id: '/_authenticated/dashboard/stock-reports'
       path: '/stock-reports'
@@ -621,8 +654,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAiAssistantRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/inventory/$productId': {
+      id: '/_authenticated/dashboard/inventory/$productId'
+      path: '/$productId'
+      fullPath: '/dashboard/inventory/$productId'
+      preLoaderRoute: typeof AuthenticatedDashboardInventoryProductIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardInventoryRoute
+    }
   }
 }
+
+interface AuthenticatedDashboardInventoryRouteChildren {
+  AuthenticatedDashboardInventoryProductIdRoute: typeof AuthenticatedDashboardInventoryProductIdRoute
+}
+
+const AuthenticatedDashboardInventoryRouteChildren: AuthenticatedDashboardInventoryRouteChildren =
+  {
+    AuthenticatedDashboardInventoryProductIdRoute:
+      AuthenticatedDashboardInventoryProductIdRoute,
+  }
+
+const AuthenticatedDashboardInventoryRouteWithChildren =
+  AuthenticatedDashboardInventoryRoute._addFileChildren(
+    AuthenticatedDashboardInventoryRouteChildren,
+  )
 
 interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRoute
@@ -633,13 +688,14 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardDebtorsRoute: typeof AuthenticatedDashboardDebtorsRoute
   AuthenticatedDashboardExpensesRoute: typeof AuthenticatedDashboardExpensesRoute
   AuthenticatedDashboardHrRoute: typeof AuthenticatedDashboardHrRoute
-  AuthenticatedDashboardInventoryRoute: typeof AuthenticatedDashboardInventoryRoute
+  AuthenticatedDashboardInventoryRoute: typeof AuthenticatedDashboardInventoryRouteWithChildren
   AuthenticatedDashboardMpesaRoute: typeof AuthenticatedDashboardMpesaRoute
   AuthenticatedDashboardPayrollRoute: typeof AuthenticatedDashboardPayrollRoute
   AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardSalesRoute: typeof AuthenticatedDashboardSalesRoute
   AuthenticatedDashboardSmsRoute: typeof AuthenticatedDashboardSmsRoute
   AuthenticatedDashboardStockReportsRoute: typeof AuthenticatedDashboardStockReportsRoute
+  AuthenticatedDashboardSubscriptionRoute: typeof AuthenticatedDashboardSubscriptionRoute
   AuthenticatedDashboardSuppliersRoute: typeof AuthenticatedDashboardSuppliersRoute
   AuthenticatedDashboardTasksRoute: typeof AuthenticatedDashboardTasksRoute
   AuthenticatedDashboardUsersRoute: typeof AuthenticatedDashboardUsersRoute
@@ -658,7 +714,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardDebtorsRoute: AuthenticatedDashboardDebtorsRoute,
     AuthenticatedDashboardExpensesRoute: AuthenticatedDashboardExpensesRoute,
     AuthenticatedDashboardHrRoute: AuthenticatedDashboardHrRoute,
-    AuthenticatedDashboardInventoryRoute: AuthenticatedDashboardInventoryRoute,
+    AuthenticatedDashboardInventoryRoute:
+      AuthenticatedDashboardInventoryRouteWithChildren,
     AuthenticatedDashboardMpesaRoute: AuthenticatedDashboardMpesaRoute,
     AuthenticatedDashboardPayrollRoute: AuthenticatedDashboardPayrollRoute,
     AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
@@ -666,6 +723,8 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardSmsRoute: AuthenticatedDashboardSmsRoute,
     AuthenticatedDashboardStockReportsRoute:
       AuthenticatedDashboardStockReportsRoute,
+    AuthenticatedDashboardSubscriptionRoute:
+      AuthenticatedDashboardSubscriptionRoute,
     AuthenticatedDashboardSuppliersRoute: AuthenticatedDashboardSuppliersRoute,
     AuthenticatedDashboardTasksRoute: AuthenticatedDashboardTasksRoute,
     AuthenticatedDashboardUsersRoute: AuthenticatedDashboardUsersRoute,
