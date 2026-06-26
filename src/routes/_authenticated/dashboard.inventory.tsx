@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
@@ -134,7 +134,7 @@ function ProductsPage() {
                 const s = stockStatus(p);
                 return (
                   <tr key={p.id} className="border-t hover:bg-muted/30">
-                    <td className="px-4 py-3 font-medium">{p.name}</td>
+                    <td className="px-4 py-3 font-medium"><Link to="/dashboard/inventory/$productId" params={{ productId: p.id }} className="hover:underline">{p.name}</Link></td>
                     <td className="px-4 py-3 text-muted-foreground">{p.sku ?? "—"}</td>
                     <td className="px-4 py-3">{p.category ?? "—"}</td>
                     <td className="px-4 py-3 text-right">{fmtMoney(Number(p.cost ?? 0))}</td>
