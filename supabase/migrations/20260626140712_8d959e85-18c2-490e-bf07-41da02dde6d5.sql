@@ -1,0 +1,1 @@
+ALTER VIEW public.plan_features SET (security_invoker = true);
