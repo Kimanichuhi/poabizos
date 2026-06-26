@@ -196,7 +196,7 @@ function ReportsPage() {
         <TabsContent value="valuation" className="mt-4">
           <ReportTable
             title="Inventory Valuation"
-            rows={inventorySummary.filter(r => r.value > 0)}
+            rows={inventorySummary.filter((r: any) => r.value > 0)}
             footer={`Total inventory value: ${money(totalInventoryValue)}`}
             columns={[
               { header: "Product", key: "name" },
