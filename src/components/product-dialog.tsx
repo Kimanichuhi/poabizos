@@ -22,9 +22,9 @@ export function ProductDialog({ open, onOpenChange, editing }: Props) {
   const { tenant } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState<any>({
-    name: "", sku: "", category: "", description: "",
+    name: "", sku: "", category: "", brand: "", description: "",
     cost: 0, price: 0, stock_quantity: 0, reorder_level: 0,
-    barcode: "", image_url: "", status: "active", is_service: false,
+    barcode: "", image_url: "", status: "active", is_service: false, unit: "piece",
   });
   const [newCategory, setNewCategory] = useState("");
 
@@ -34,6 +34,7 @@ export function ProductDialog({ open, onOpenChange, editing }: Props) {
       name: editing?.name ?? "",
       sku: editing?.sku ?? "",
       category: editing?.category ?? "",
+      brand: editing?.brand ?? "",
       description: editing?.description ?? "",
       cost: editing?.cost ?? 0,
       price: editing?.price ?? 0,
@@ -43,6 +44,7 @@ export function ProductDialog({ open, onOpenChange, editing }: Props) {
       image_url: editing?.image_url ?? "",
       status: editing?.status ?? "active",
       is_service: editing?.is_service ?? false,
+      unit: editing?.unit ?? "piece",
     });
     setNewCategory("");
   }, [open, editing]);

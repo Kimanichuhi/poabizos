@@ -110,6 +110,16 @@ export function SaleDialog({ open, onOpenChange }: Props) {
     mutationFn: async () => {
       const validItems = items.filter(it => it.description && Number(it.quantity) > 0);
       if (validItems.length === 0) throw new Error("Add at least one item");
+      // Enforce stock availability before sending to RPC
+      for (const it of validItems) {
+        if (!it.is_service && it.product_id) {
+          const p = products.find((x: any) => x.id === it.product_id);
+          const avail = Number(p?.stock_quantity ?? 0);
+          if (Number(it.quantity) > avail) {
+            throw new Error(`Insufficient stock for "${it.description}" — only ${avail} available`);
+          }
+        }
+      }
       const payload = {
         sale_type: saleType,
         sale_date: saleDate,
