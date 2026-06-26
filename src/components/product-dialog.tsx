@@ -114,6 +114,15 @@ export function ProductDialog({ open, onOpenChange, editing }: Props) {
               </select>
               <Input className="mt-1.5" placeholder="Or add new category" value={newCategory} onChange={e => setNewCategory(e.target.value)} />
             </div>
+            <div><Label>Brand</Label><Input className="mt-1.5" value={form.brand} onChange={e => set("brand", e.target.value)} placeholder="Optional" /></div>
+            <div>
+              <Label>Unit</Label>
+              <select className="w-full h-9 px-3 rounded-md border bg-background text-sm mt-1.5" value={form.unit} onChange={e => set("unit", e.target.value)} disabled={form.is_service}>
+                <option value="piece">Piece</option><option value="box">Box</option><option value="bottle">Bottle</option>
+                <option value="packet">Packet</option><option value="kg">Kilogram</option><option value="litre">Litre</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
             <div className="sm:col-span-2"><Label>Description</Label><Textarea rows={2} className="mt-1.5" value={form.description} onChange={e => set("description", e.target.value)} /></div>
           </section>
 
@@ -123,6 +132,9 @@ export function ProductDialog({ open, onOpenChange, editing }: Props) {
             <div><Label>Stock qty</Label><Input className="mt-1.5" type="number" min="0" value={form.stock_quantity} disabled={form.is_service} onChange={e => set("stock_quantity", Number(e.target.value))} /></div>
             <div><Label>Reorder at</Label><Input className="mt-1.5" type="number" min="0" value={form.reorder_level} disabled={form.is_service} onChange={e => set("reorder_level", Number(e.target.value))} /></div>
           </section>
+          {form.price > 0 && form.cost > 0 && (
+            <div className="text-xs text-muted-foreground -mt-2">Estimated profit per unit: <span className="font-medium text-foreground">{(Number(form.price) - Number(form.cost)).toFixed(2)}</span> ({(((Number(form.price) - Number(form.cost)) / Number(form.price)) * 100).toFixed(1)}%)</div>
+          )}
 
           <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 border-t pt-4">
             <div><Label>Barcode</Label><Input className="mt-1.5" value={form.barcode} onChange={e => set("barcode", e.target.value)} /></div>
