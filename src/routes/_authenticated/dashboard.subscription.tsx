@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -164,8 +165,8 @@ function SubscriptionPage() {
             </thead>
             <tbody>
               {Object.entries(byModule).map(([module, list]) => (
-                <>
-                  <tr key={module} className="bg-muted/30">
+                <Fragment key={module}>
+                  <tr className="bg-muted/30">
                     <td colSpan={1 + packages.length} className="px-4 py-1.5 text-xs uppercase tracking-wider text-muted-foreground font-medium">{module}</td>
                   </tr>
                   {list.map(f => (
@@ -180,7 +181,7 @@ function SubscriptionPage() {
                       ))}
                     </tr>
                   ))}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>
