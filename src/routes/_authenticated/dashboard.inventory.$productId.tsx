@@ -191,6 +191,10 @@ function ProductDetail() {
         </Card>
       </div>
 
+
+      {/* Profit history */}
+      <ProfitHistory salesHistory={salesHistory} cost={Number(product.cost ?? 0)} />
+
       {/* Sales history */}
       <Card className="p-0 overflow-hidden">
         <div className="px-5 py-4 border-b"><h3 className="font-semibold">Recent sales</h3></div>
