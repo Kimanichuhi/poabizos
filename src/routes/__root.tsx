@@ -95,7 +95,6 @@ function RootComponent() {
         <InstallBanner />
         <Toaster position="top-right" />
       </AuthProvider>
-      </AuthProvider>
     </QueryClientProvider>
   );
 }
