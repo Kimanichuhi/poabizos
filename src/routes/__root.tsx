@@ -8,6 +8,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AuthProvider } from "@/lib/auth-context";
 import { Toaster } from "@/components/ui/sonner";
+import { InstallBanner } from "@/components/install-banner";
 
 function NotFoundComponent() {
   return (
@@ -91,7 +92,9 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Outlet />
+        <InstallBanner />
         <Toaster position="top-right" />
+      </AuthProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
