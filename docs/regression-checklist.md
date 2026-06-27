@@ -4,6 +4,10 @@ Run after any change to: `subscription_packages`, `package_features`, `features`
 `change_tenant_package`, `tenant_has_feature`, `get_tenant_features`,
 `FeatureGuard`, or product/inventory routes.
 
+> Automated RLS isolation tests live in `docs/rls-regression-tests.sql`. Run with:
+> `psql "$SUPABASE_DB_URL" -f docs/rls-regression-tests.sql`
+> Expected output: a series of `PASS [...]` notices; the script ROLLBACKs at the end.
+
 ## 1. Products gating (Starter package)
 
 - [ ] Sign in as a tenant whose `tenants.subscription_plan = 'starter'`
