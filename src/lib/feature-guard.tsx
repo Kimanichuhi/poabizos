@@ -14,15 +14,22 @@ export function FeatureGuard({ featureKey, children }: { featureKey: string; chi
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] text-center p-8">
       <div className="rounded-full bg-muted p-4 mb-4"><Lock className="h-8 w-8 text-muted-foreground" /></div>
-      <h2 className="text-xl font-semibold">Feature locked</h2>
+      <h2 className="text-xl font-semibold">This feature is locked</h2>
       <p className="text-muted-foreground mt-2 max-w-md">
-        {required
-          ? <>This feature is available in the <span className="font-semibold text-foreground">{required.name}</span> package.</>
-          : <>This feature isn't available on your current package.</>}
-        {packageInfo && <> You're currently on <span className="font-semibold text-foreground">{packageInfo.package_name}</span>.</>}
+        The <span className="font-mono text-foreground">{featureKey}</span> capability isn't included in
+        {packageInfo ? <> your <span className="font-semibold text-foreground">{packageInfo.package_name}</span> package.</> : <> your current package.</>}
       </p>
+      {required && (
+        <p className="mt-2 text-sm max-w-md">
+          Available in the <span className="font-semibold">{required.name}</span> package and above.
+        </p>
+      )}
       <div className="flex gap-2 mt-6">
-        <Button asChild><Link to="/dashboard/subscription">Upgrade Package <ArrowUpRight className="h-4 w-4 ml-1" /></Link></Button>
+        <Button asChild>
+          <Link to="/dashboard/subscription">
+            {required ? <>Upgrade to {required.name}</> : <>View packages</>} <ArrowUpRight className="h-4 w-4 ml-1" />
+          </Link>
+        </Button>
         <Button asChild variant="outline"><Link to="/dashboard">Back to dashboard</Link></Button>
       </div>
     </div>
