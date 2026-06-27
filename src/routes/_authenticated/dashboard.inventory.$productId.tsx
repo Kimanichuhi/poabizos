@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +15,20 @@ import { ProductDialog } from "@/components/product-dialog";
 import { ArrowLeft, Pencil, ArrowUpDown, Archive, ArchiveRestore } from "lucide-react";
 import { fmtMoney } from "@/lib/format";
 import { toast } from "sonner";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from "recharts";
+
+type Range = "7d" | "30d" | "90d" | "ytd" | "all";
+const RANGES: { k: Range; label: string }[] = [
+  { k: "7d", label: "7 days" }, { k: "30d", label: "30 days" },
+  { k: "90d", label: "90 days" }, { k: "ytd", label: "YTD" }, { k: "all", label: "All time" },
+];
+function rangeStart(r: Range): Date | null {
+  const now = new Date();
+  if (r === "all") return null;
+  if (r === "ytd") return new Date(now.getFullYear(), 0, 1);
+  const days = r === "7d" ? 7 : r === "30d" ? 30 : 90;
+  return new Date(now.getTime() - days * 86400_000);
+}
 
 function ProductDetail() {
   const { productId } = Route.useParams();
