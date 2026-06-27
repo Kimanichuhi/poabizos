@@ -183,5 +183,5 @@ function ProductsPage() {
 }
 
 export const Route = createFileRoute("/_authenticated/dashboard/inventory")({
-  component: () => <FeatureGuard featureKey="inventory"><ProductsPage /></FeatureGuard>,
+  component: () => <FeatureGuard featureKey="products"><ProductsPage /></FeatureGuard>,
 });
