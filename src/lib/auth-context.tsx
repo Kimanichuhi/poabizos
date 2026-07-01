@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User } from "@supabase/supabase-js";
+import { applyTenantTheme } from "@/lib/apply-tenant-theme";
 
 export type AppRole = "platform_super_admin" | "tenant_admin" | "manager" | "staff";
 export type Plan = "starter" | "growth" | "business" | "premium";
@@ -21,6 +22,13 @@ export interface Tenant {
   subscription_status: SubStatus;
   email: string | null;
   phone: string | null;
+  logo_url?: string | null;
+  theme_primary?: string | null;
+  theme_accent?: string | null;
+  theme_mode?: string | null;
+  currency?: string | null;
+  timezone?: string | null;
+  locale?: string | null;
 }
 export interface PackageInfo {
   id: string;
@@ -125,6 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTenant(t);
     setFeatures(feats);
     setPackageInfo(pkg);
+    applyTenantTheme(t as any);
   };
 
   const refresh = async () => {

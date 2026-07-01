@@ -27,6 +27,7 @@ import { Route as AuthenticatedDashboardSuppliersRouteImport } from './routes/_a
 import { Route as AuthenticatedDashboardSubscriptionRouteImport } from './routes/_authenticated/dashboard.subscription'
 import { Route as AuthenticatedDashboardStockReportsRouteImport } from './routes/_authenticated/dashboard.stock-reports'
 import { Route as AuthenticatedDashboardSmsRouteImport } from './routes/_authenticated/dashboard.sms'
+import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
 import { Route as AuthenticatedDashboardSalesRouteImport } from './routes/_authenticated/dashboard.sales'
 import { Route as AuthenticatedDashboardReportsRouteImport } from './routes/_authenticated/dashboard.reports'
 import { Route as AuthenticatedDashboardPayrollRouteImport } from './routes/_authenticated/dashboard.payroll'
@@ -142,6 +143,12 @@ const AuthenticatedDashboardSmsRoute =
     path: '/sms',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedDashboardSettingsRoute =
+  AuthenticatedDashboardSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
 const AuthenticatedDashboardSalesRoute =
   AuthenticatedDashboardSalesRouteImport.update({
     id: '/sales',
@@ -247,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
   '/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
@@ -278,6 +286,7 @@ export interface FileRoutesByTo {
   '/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
   '/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
@@ -313,6 +322,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/payroll': typeof AuthenticatedDashboardPayrollRoute
   '/_authenticated/dashboard/reports': typeof AuthenticatedDashboardReportsRoute
   '/_authenticated/dashboard/sales': typeof AuthenticatedDashboardSalesRoute
+  '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
   '/_authenticated/dashboard/sms': typeof AuthenticatedDashboardSmsRoute
   '/_authenticated/dashboard/stock-reports': typeof AuthenticatedDashboardStockReportsRoute
   '/_authenticated/dashboard/subscription': typeof AuthenticatedDashboardSubscriptionRoute
@@ -348,6 +358,7 @@ export interface FileRouteTypes {
     | '/dashboard/payroll'
     | '/dashboard/reports'
     | '/dashboard/sales'
+    | '/dashboard/settings'
     | '/dashboard/sms'
     | '/dashboard/stock-reports'
     | '/dashboard/subscription'
@@ -379,6 +390,7 @@ export interface FileRouteTypes {
     | '/dashboard/payroll'
     | '/dashboard/reports'
     | '/dashboard/sales'
+    | '/dashboard/settings'
     | '/dashboard/sms'
     | '/dashboard/stock-reports'
     | '/dashboard/subscription'
@@ -413,6 +425,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/payroll'
     | '/_authenticated/dashboard/reports'
     | '/_authenticated/dashboard/sales'
+    | '/_authenticated/dashboard/settings'
     | '/_authenticated/dashboard/sms'
     | '/_authenticated/dashboard/stock-reports'
     | '/_authenticated/dashboard/subscription'
@@ -563,6 +576,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardSmsRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/dashboard/settings': {
+      id: '/_authenticated/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
+    }
     '/_authenticated/dashboard/sales': {
       id: '/_authenticated/dashboard/sales'
       path: '/sales'
@@ -693,6 +713,7 @@ interface AuthenticatedDashboardRouteChildren {
   AuthenticatedDashboardPayrollRoute: typeof AuthenticatedDashboardPayrollRoute
   AuthenticatedDashboardReportsRoute: typeof AuthenticatedDashboardReportsRoute
   AuthenticatedDashboardSalesRoute: typeof AuthenticatedDashboardSalesRoute
+  AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
   AuthenticatedDashboardSmsRoute: typeof AuthenticatedDashboardSmsRoute
   AuthenticatedDashboardStockReportsRoute: typeof AuthenticatedDashboardStockReportsRoute
   AuthenticatedDashboardSubscriptionRoute: typeof AuthenticatedDashboardSubscriptionRoute
@@ -720,6 +741,7 @@ const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
     AuthenticatedDashboardPayrollRoute: AuthenticatedDashboardPayrollRoute,
     AuthenticatedDashboardReportsRoute: AuthenticatedDashboardReportsRoute,
     AuthenticatedDashboardSalesRoute: AuthenticatedDashboardSalesRoute,
+    AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
     AuthenticatedDashboardSmsRoute: AuthenticatedDashboardSmsRoute,
     AuthenticatedDashboardStockReportsRoute:
       AuthenticatedDashboardStockReportsRoute,
