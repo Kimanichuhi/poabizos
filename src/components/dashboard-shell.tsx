@@ -3,11 +3,12 @@ import { useAuth } from "@/lib/auth-context";
 import {
   LayoutDashboard, ShoppingCart, Wallet, Users, BarChart3, Package, HandCoins,
   Truck, FileBarChart, UserCog, Banknote, Building2, ListChecks, Smartphone,
-  MessageSquare, Bot, GitBranch, Shield, ScrollText, LogOut, ChevronDown, CreditCard,
+  MessageSquare, Bot, GitBranch, Shield, ScrollText, LogOut, ChevronDown, CreditCard, Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
+import { MobileNav } from "@/components/mobile-nav";
 
 interface NavItem { to: string; label: string; icon: any; feature?: string; anyFeature?: string[]; adminOnly?: boolean; }
 
@@ -35,6 +36,7 @@ const NAV: NavItem[] = [
 
 const ADMIN_NAV: NavItem[] = [
   { to: "/dashboard/users", label: "Users & Roles", icon: Shield, adminOnly: true },
+  { to: "/dashboard/settings", label: "Settings", icon: Settings, adminOnly: true },
   { to: "/dashboard/audit-logs", label: "Audit Logs", icon: ScrollText, adminOnly: true },
 ];
 
@@ -54,17 +56,24 @@ export function DashboardShell() {
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
-      <aside className="hidden md:flex w-64 flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
+      {/* Desktop sidebar */}
+      <aside className="hidden md:flex w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground border-r border-sidebar-border">
         <div className="px-5 py-5 border-b border-sidebar-border">
-          <div className="text-sm font-semibold truncate">{tenant?.business_name ?? "Workspace"}</div>
-          <div className="mt-1 flex items-center gap-2">
-            <Badge variant="outline" className="border-sidebar-border text-sidebar-foreground/80 capitalize text-[10px]">
-              {tenant?.subscription_plan ?? "—"} plan
-            </Badge>
-            {tenant?.subscription_status === "suspended" && (
-              <Badge variant="destructive" className="text-[10px]">Suspended</Badge>
-            )}
+          <div className="flex items-center gap-2">
+            {tenant?.logo_url ? (
+              <img src={tenant.logo_url} alt="" className="h-8 w-8 rounded object-cover shrink-0" />
+            ) : null}
+            <div className="min-w-0">
+              <div className="text-sm font-semibold truncate">{tenant?.business_name ?? "Workspace"}</div>
+              <div className="mt-1 flex items-center gap-2">
+                <Badge variant="outline" className="border-sidebar-border text-sidebar-foreground/80 capitalize text-[10px]">
+                  {tenant?.subscription_plan ?? "—"} plan
+                </Badge>
+                {tenant?.subscription_status === "suspended" && (
+                  <Badge variant="destructive" className="text-[10px]">Suspended</Badge>
+                )}
+              </div>
+            </div>
           </div>
         </div>
         <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5 text-sm">
@@ -73,7 +82,7 @@ export function DashboardShell() {
             const Icon = i.icon;
             return (
               <Link key={i.to} to={i.to} className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${active ? "bg-sidebar-accent text-sidebar-accent-foreground" : "hover:bg-sidebar-accent/60"}`}>
-                <Icon className="h-4 w-4 opacity-80" /> {i.label}
+                <Icon className="h-4 w-4 opacity-80 shrink-0" /> <span className="truncate">{i.label}</span>
               </Link>
             );
           })}
@@ -85,7 +94,7 @@ export function DashboardShell() {
                 const Icon = i.icon;
                 return (
                   <Link key={i.to} to={i.to} className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${active ? "bg-sidebar-accent text-sidebar-accent-foreground" : "hover:bg-sidebar-accent/60"}`}>
-                    <Icon className="h-4 w-4 opacity-80" /> {i.label}
+                    <Icon className="h-4 w-4 opacity-80 shrink-0" /> <span className="truncate">{i.label}</span>
                   </Link>
                 );
               })}
@@ -102,15 +111,19 @@ export function DashboardShell() {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-14 border-b bg-card flex items-center justify-between px-4 md:px-6">
-          <div className="md:hidden font-semibold truncate">{tenant?.business_name}</div>
-          <div className="ml-auto relative">
-            <Button variant="ghost" size="sm" onClick={() => setOpen(o => !o)} className="gap-2">
-              <div className="h-7 w-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold">
+        <header className="h-14 border-b bg-card flex items-center gap-2 justify-between px-3 md:px-6 sticky top-0 z-30">
+          <div className="flex items-center gap-2 min-w-0">
+            <MobileNav visibleNav={visibleNav} adminNav={visibleAdminNav} showPlatform={isPlatformAdmin} />
+            {tenant?.logo_url && <img src={tenant.logo_url} alt="" className="h-7 w-7 rounded object-cover md:hidden shrink-0" />}
+            <div className="md:hidden font-semibold truncate text-sm">{tenant?.business_name}</div>
+          </div>
+          <div className="relative shrink-0">
+            <Button variant="ghost" size="sm" onClick={() => setOpen(o => !o)} className="gap-2 px-2">
+              <div className="h-7 w-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold shrink-0">
                 {(profile?.full_name || user?.email || "?").slice(0,1).toUpperCase()}
               </div>
-              <span className="hidden sm:inline text-sm">{profile?.full_name || user?.email}</span>
-              <ChevronDown className="h-3 w-3" />
+              <span className="hidden sm:inline text-sm max-w-[160px] truncate">{profile?.full_name || user?.email}</span>
+              <ChevronDown className="h-3 w-3 hidden sm:block" />
             </Button>
             {open && (
               <div className="absolute right-0 mt-2 w-56 bg-popover border rounded-md shadow-lg py-1 z-50">
@@ -126,7 +139,7 @@ export function DashboardShell() {
             )}
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-6 overflow-x-hidden">
+        <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-x-hidden">
           <Outlet />
         </main>
       </div>
