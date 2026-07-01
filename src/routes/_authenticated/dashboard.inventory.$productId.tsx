@@ -203,8 +203,8 @@ function ProductDetail() {
       </div>
 
 
-      {/* Profit history */}
-      <ProfitHistory salesHistory={salesHistory} cost={Number(product.cost ?? 0)} />
+      {/* Profit history — server-side aggregated for speed */}
+      <ProfitHistory productId={productId} cost={Number(product.cost ?? 0)} />
 
       {/* Sales history */}
       <Card className="p-0 overflow-hidden">
@@ -268,41 +268,42 @@ function Row({ k, v }: { k: string; v: any }) {
   return <div className="flex justify-between gap-3"><span className="text-muted-foreground">{k}</span><span className="text-right font-medium">{v ?? "—"}</span></div>;
 }
 
-function ProfitHistory({ salesHistory, cost }: { salesHistory: any[]; cost: number }) {
+function ProfitHistory({ productId, cost }: { productId: string; cost: number }) {
   const [range, setRange] = useState<Range>("30d");
 
-  const { filtered, chart, totals } = useMemo(() => {
-    const start = rangeStart(range);
-    const rows = (salesHistory ?? []).filter((r: any) => {
-      const d = r.sale?.sale_date ? new Date(r.sale.sale_date) : null;
-      if (!d) return false;
-      return !start || d >= start;
-    });
-    const byDay = new Map<string, { date: string; revenue: number; cost: number; profit: number; qty: number }>();
-    let revenue = 0, totalCost = 0, qty = 0;
-    rows.forEach((r: any) => {
-      const day = r.sale?.sale_date ?? new Date().toISOString().slice(0, 10);
-      const q = Number(r.quantity ?? 0);
-      const rev = Number(r.line_total ?? 0);
-      const c = q * cost;
-      qty += q; revenue += rev; totalCost += c;
-      const cur = byDay.get(day) ?? { date: day, revenue: 0, cost: 0, profit: 0, qty: 0 };
-      cur.revenue += rev; cur.cost += c; cur.profit += rev - c; cur.qty += q;
-      byDay.set(day, cur);
-    });
-    return {
-      filtered: rows,
-      chart: Array.from(byDay.values()).sort((a, b) => a.date.localeCompare(b.date)),
-      totals: { revenue, cost: totalCost, profit: revenue - totalCost, qty, margin: revenue ? ((revenue - totalCost) / revenue) * 100 : 0 },
-    };
-  }, [salesHistory, cost, range]);
+  const { data: chart = [], isLoading } = useQuery({
+    queryKey: ["profit-history", productId, range],
+    enabled: !!productId,
+    queryFn: async () => {
+      const start = rangeStart(range) ?? new Date("2000-01-01");
+      const end = new Date();
+      const { data, error } = await (supabase as any).rpc("product_profit_history", {
+        _product_id: productId,
+        _from: start.toISOString().slice(0, 10),
+        _to: end.toISOString().slice(0, 10),
+      });
+      if (error) throw error;
+      return (data ?? []).map((r: any) => ({
+        date: r.day,
+        qty: Number(r.units),
+        revenue: Number(r.revenue),
+        cost: Number(r.cost),
+        profit: Number(r.profit),
+      }));
+    },
+  });
+
+  const totals = chart.reduce((a: any, r: any) => ({
+    qty: a.qty + r.qty, revenue: a.revenue + r.revenue, cost: a.cost + r.cost, profit: a.profit + r.profit,
+  }), { qty: 0, revenue: 0, cost: 0, profit: 0 });
+  const margin = totals.revenue ? (totals.profit / totals.revenue) * 100 : 0;
 
   return (
     <Card className="p-0 overflow-hidden">
       <div className="px-5 py-4 border-b flex items-center justify-between gap-3 flex-wrap">
         <div>
           <h3 className="font-semibold">Profit history</h3>
-          <p className="text-xs text-muted-foreground mt-0.5">Selling price vs current buying price ({fmtMoney(cost)}/unit).</p>
+          <p className="text-xs text-muted-foreground mt-0.5">Server-aggregated. Current buying price: {fmtMoney(cost)}/unit.</p>
         </div>
         <div className="flex gap-1 flex-wrap">
           {RANGES.map(r => (
@@ -310,14 +311,16 @@ function ProfitHistory({ salesHistory, cost }: { salesHistory: any[]; cost: numb
           ))}
         </div>
       </div>
-      <div className="grid sm:grid-cols-4 gap-px bg-border">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-border">
         <div className="bg-card p-4"><div className="text-xs text-muted-foreground">Units sold</div><div className="text-xl font-semibold mt-1">{totals.qty}</div></div>
         <div className="bg-card p-4"><div className="text-xs text-muted-foreground">Revenue</div><div className="text-xl font-semibold mt-1">{fmtMoney(totals.revenue)}</div></div>
         <div className="bg-card p-4"><div className="text-xs text-muted-foreground">Cost</div><div className="text-xl font-semibold mt-1">{fmtMoney(totals.cost)}</div></div>
-        <div className="bg-card p-4"><div className="text-xs text-muted-foreground">Profit</div><div className={`text-xl font-semibold mt-1 ${totals.profit >= 0 ? "text-success" : "text-destructive"}`}>{fmtMoney(totals.profit)}</div><div className="text-xs text-muted-foreground mt-1">{totals.margin.toFixed(1)}% margin</div></div>
+        <div className="bg-card p-4"><div className="text-xs text-muted-foreground">Profit</div><div className={`text-xl font-semibold mt-1 ${totals.profit >= 0 ? "text-success" : "text-destructive"}`}>{fmtMoney(totals.profit)}</div><div className="text-xs text-muted-foreground mt-1">{margin.toFixed(1)}% margin</div></div>
       </div>
       <div className="p-4 h-72">
-        {chart.length === 0 ? (
+        {isLoading ? (
+          <div className="h-full flex items-center justify-center text-sm text-muted-foreground">Loading…</div>
+        ) : chart.length === 0 ? (
           <div className="h-full flex items-center justify-center text-sm text-muted-foreground">No sales in this period.</div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -334,7 +337,7 @@ function ProfitHistory({ salesHistory, cost }: { salesHistory: any[]; cost: numb
           </ResponsiveContainer>
         )}
       </div>
-      <div className="px-5 py-3 border-t text-xs text-muted-foreground">{filtered.length} sale line(s) in selected range.</div>
+      <div className="px-5 py-3 border-t text-xs text-muted-foreground">{chart.length} day(s) with sales in selected range.</div>
     </Card>
   );
 }
