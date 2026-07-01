@@ -11,9 +11,10 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Pencil, Plus, Trash2, ArrowUpDown } from "lucide-react";
+import { Pencil, Plus, Trash2, ArrowUpDown, ScanLine } from "lucide-react";
 import { fmtMoney } from "@/lib/format";
 import { toast } from "sonner";
+import { BarcodeScanner } from "@/components/barcode-scanner";
 
 function stockStatus(p: any): { label: string; klass: string } {
   if (p.is_service) return { label: "Service", klass: "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300" };
@@ -35,6 +36,14 @@ function ProductsPage() {
   const [adjQty, setAdjQty] = useState(0);
   const [adjReason, setAdjReason] = useState("Restock");
   const [adjNotes, setAdjNotes] = useState("");
+  const [scanOpen, setScanOpen] = useState(false);
+
+  const onScan = async (code: string) => {
+    const { data } = await (supabase as any).rpc("find_product_by_barcode", { _code: code });
+    const found = Array.isArray(data) ? data[0] : data;
+    if (!found) { toast.error(`No product for "${code}"`); return; }
+    setAdjust(found); setAdjQty(1); setAdjReason("Restock"); setAdjNotes(`Scanned barcode ${code}`);
+  };
 
   const queryKey = ["resource", "products", tenant?.id];
   const { data: rows = [], isLoading } = useQuery({
@@ -90,7 +99,10 @@ function ProductsPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Products</h1>
           <p className="text-muted-foreground text-sm mt-1">Manage your products, services and stock levels.</p>
         </div>
-        <Button onClick={() => { setEditing(null); setOpen(true); }} className="gap-2"><Plus className="h-4 w-4" /> New Product</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => setScanOpen(true)} className="gap-2"><ScanLine className="h-4 w-4" /> Scan to add stock</Button>
+          <Button onClick={() => { setEditing(null); setOpen(true); }} className="gap-2"><Plus className="h-4 w-4" /> New Product</Button>
+        </div>
       </div>
 
       {lowCount > 0 && (
@@ -178,6 +190,8 @@ function ProductsPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <BarcodeScanner open={scanOpen} onOpenChange={setScanOpen} onScan={onScan} title="Scan to add stock" />
     </div>
   );
 }

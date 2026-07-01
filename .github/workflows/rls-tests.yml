@@ -1,0 +1,24 @@
+name: RLS regression tests
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  rls:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install psql client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Run RLS regression suite
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::warning ::SUPABASE_DB_URL not set — skipping RLS tests"
+            exit 0
+          fi
+          chmod +x scripts/run-rls-tests.sh
+          ./scripts/run-rls-tests.sh docs/rls-regression-tests.sql

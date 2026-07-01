@@ -1054,33 +1054,54 @@ export type Database = {
           business_name: string
           business_type: string | null
           created_at: string
+          currency: string | null
           email: string | null
           id: string
+          locale: string | null
+          logo_url: string | null
           phone: string | null
           subscription_plan: Database["public"]["Enums"]["subscription_plan"]
           subscription_status: Database["public"]["Enums"]["subscription_status"]
+          theme_accent: string | null
+          theme_mode: string | null
+          theme_primary: string | null
+          timezone: string | null
           updated_at: string
         }
         Insert: {
           business_name: string
           business_type?: string | null
           created_at?: string
+          currency?: string | null
           email?: string | null
           id?: string
+          locale?: string | null
+          logo_url?: string | null
           phone?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
           subscription_status?: Database["public"]["Enums"]["subscription_status"]
+          theme_accent?: string | null
+          theme_mode?: string | null
+          theme_primary?: string | null
+          timezone?: string | null
           updated_at?: string
         }
         Update: {
           business_name?: string
           business_type?: string | null
           created_at?: string
+          currency?: string | null
           email?: string | null
           id?: string
+          locale?: string | null
+          logo_url?: string | null
           phone?: string | null
           subscription_plan?: Database["public"]["Enums"]["subscription_plan"]
           subscription_status?: Database["public"]["Enums"]["subscription_status"]
+          theme_accent?: string | null
+          theme_mode?: string | null
+          theme_primary?: string | null
+          timezone?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -1146,6 +1167,26 @@ export type Database = {
         Args: { _package_code: string }
         Returns: string
       }
+      change_tenant_user_role: {
+        Args: {
+          _new_role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: undefined
+      }
+      find_product_by_barcode: {
+        Args: { _code: string }
+        Returns: {
+          barcode: string
+          cost: number
+          id: string
+          is_service: boolean
+          name: string
+          price: number
+          sku: string
+          stock_quantity: number
+        }[]
+      }
       get_my_tenant_id: { Args: never; Returns: string }
       get_tenant_features: {
         Args: { _tenant_id: string }
@@ -1169,6 +1210,16 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      product_profit_history: {
+        Args: { _from: string; _product_id: string; _to: string }
+        Returns: {
+          cost: number
+          day: string
+          profit: number
+          revenue: number
+          units: number
+        }[]
+      }
       record_sale: { Args: { _payload: Json }; Returns: string }
       register_tenant: {
         Args: {
@@ -1180,10 +1231,12 @@ export type Database = {
         }
         Returns: string
       }
+      remove_tenant_user: { Args: { _user_id: string }; Returns: undefined }
       tenant_has_feature: {
         Args: { _feature_key: string; _tenant_id: string }
         Returns: boolean
       }
+      update_tenant_settings: { Args: { _payload: Json }; Returns: undefined }
     }
     Enums: {
       app_role: "platform_super_admin" | "tenant_admin" | "manager" | "staff"
