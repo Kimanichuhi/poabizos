@@ -53,8 +53,17 @@ function ProductDetail() {
     queryKey: ["movements", productId],
     enabled: !!productId,
     queryFn: async () => {
-      const { data } = await (supabase as any).from("stock_movements").select("*").eq("product_id", productId).order("created_at", { ascending: false }).limit(200);
-      return data ?? [];
+      const { data } = await (supabase as any).from("stock_movements")
+        .select("*")
+        .eq("product_id", productId).order("created_at", { ascending: false }).limit(500);
+      const rows = data ?? [];
+      const ids = Array.from(new Set(rows.map((m: any) => m.created_by).filter(Boolean)));
+      let names: Record<string, string> = {};
+      if (ids.length) {
+        const { data: profs } = await (supabase as any).from("profiles").select("id, full_name, email").in("id", ids);
+        (profs ?? []).forEach((p: any) => { names[p.id] = p.full_name || p.email; });
+      }
+      return rows.map((m: any) => ({ ...m, user_name: names[m.created_by] ?? null }));
     },
   });
 
@@ -167,21 +176,23 @@ function ProductDetail() {
                 <tr>
                   <th className="px-4 py-2 text-left font-medium">Date</th>
                   <th className="px-4 py-2 text-left font-medium">Reason</th>
-                  <th className="px-4 py-2 text-left font-medium">Type</th>
+                  <th className="px-4 py-2 text-left font-medium">Reference</th>
                   <th className="px-4 py-2 text-right font-medium">Change</th>
+                  <th className="px-4 py-2 text-left font-medium">User</th>
                   <th className="px-4 py-2 text-left font-medium">Notes</th>
                 </tr>
               </thead>
               <tbody>
-                {movements.length === 0 && <tr><td colSpan={5} className="px-4 py-8 text-center text-muted-foreground">No movements yet.</td></tr>}
+                {movements.length === 0 && <tr><td colSpan={6} className="px-4 py-8 text-center text-muted-foreground">No movements yet.</td></tr>}
                 {movements.map((m: any) => (
                   <tr key={m.id} className="border-t">
                     <td className="px-4 py-2 whitespace-nowrap">{new Date(m.created_at).toLocaleString()}</td>
                     <td className="px-4 py-2">{m.reason ?? "—"}</td>
-                    <td className="px-4 py-2"><Badge variant="outline" className="capitalize text-[10px]">{m.reference_type ?? "—"}</Badge></td>
+                    <td className="px-4 py-2"><Badge variant="outline" className="capitalize text-[10px]">{m.reference_type ?? "—"}</Badge>{m.reference_id && <span className="ml-1 font-mono text-[10px] text-muted-foreground">{String(m.reference_id).slice(0, 8)}</span>}</td>
                     <td className={`px-4 py-2 text-right font-medium ${Number(m.change) > 0 ? "text-success" : "text-destructive"}`}>
                       {Number(m.change) > 0 ? "+" : ""}{m.change}
                     </td>
+                    <td className="px-4 py-2 text-muted-foreground">{m.user_name ?? "—"}</td>
                     <td className="px-4 py-2 text-muted-foreground">{m.notes ?? ""}</td>
                   </tr>
                 ))}
