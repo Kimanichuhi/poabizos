@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Plus, Trash2, Search } from "lucide-react";
+import { Plus, Trash2, Search, ScanLine } from "lucide-react";
 import { fmtMoney } from "@/lib/format";
+import { BarcodeScanner } from "@/components/barcode-scanner";
 
 type Item = {
   product_id: string | null;
@@ -49,6 +50,28 @@ export function SaleDialog({ open, onOpenChange }: Props) {
   const [amountReceived, setAmountReceived] = useState(0);
   const [dueDate, setDueDate] = useState("");
   const [notes, setNotes] = useState("");
+  const [scanOpen, setScanOpen] = useState(false);
+
+  const onBarcode = async (code: string) => {
+    const { data, error } = await (supabase as any).rpc("find_product_by_barcode", { _code: code });
+    const found = Array.isArray(data) ? data[0] : data;
+    if (error || !found) { toast.error(`No product for code "${code}"`); return; }
+    setItems(prev => {
+      const idx = prev.findIndex(it => it.product_id === found.id);
+      if (idx >= 0) {
+        return prev.map((it, i) => i === idx ? { ...it, quantity: Number(it.quantity) + 1 } : it);
+      }
+      const filled: Item = {
+        product_id: found.id, description: found.name, quantity: 1,
+        unit_price: Number(found.price ?? 0), discount: 0,
+        is_service: !!found.is_service,
+        available: found.is_service ? null : found.stock_quantity,
+      };
+      const hasEmpty = prev.length === 1 && !prev[0].description && !prev[0].product_id;
+      return hasEmpty ? [filled] : [...prev, filled];
+    });
+    toast.success(`Added ${found.name}`);
+  };
 
   useEffect(() => {
     if (open) {
@@ -205,11 +228,16 @@ export function SaleDialog({ open, onOpenChange }: Props) {
 
         {/* Items */}
         <section className="space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
             <Label>Products / Services</Label>
-            <Button type="button" size="sm" variant="outline" onClick={() => setItems(p => [...p, blankItem()])}>
-              <Plus className="h-3.5 w-3.5" /> Add Item
-            </Button>
+            <div className="flex gap-2">
+              <Button type="button" size="sm" variant="outline" onClick={() => setScanOpen(true)}>
+                <ScanLine className="h-3.5 w-3.5 mr-1" /> Scan
+              </Button>
+              <Button type="button" size="sm" variant="outline" onClick={() => setItems(p => [...p, blankItem()])}>
+                <Plus className="h-3.5 w-3.5" /> Add Item
+              </Button>
+            </div>
           </div>
           <div className="space-y-2">
             {items.map((it, i) => {
@@ -316,6 +344,7 @@ export function SaleDialog({ open, onOpenChange }: Props) {
             {save.isPending ? "Saving…" : "Save Sale"}
           </Button>
         </DialogFooter>
+        <BarcodeScanner open={scanOpen} onOpenChange={setScanOpen} onScan={onBarcode} title="Scan product barcode" />
       </DialogContent>
     </Dialog>
   );
