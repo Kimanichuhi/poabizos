@@ -22,14 +22,30 @@ export function applyTenantTheme(t: {
   if (primary) {
     root.style.setProperty("--primary", primary);
     root.style.setProperty("--ring", primary);
+    // Tint the sidebar with the tenant's primary color
+    root.style.setProperty("--sidebar", `color-mix(in oklab, ${primary} 82%, oklch(0.18 0.02 245))`);
+    root.style.setProperty("--sidebar-foreground", "oklch(0.98 0 0)");
+    root.style.setProperty("--sidebar-accent", `color-mix(in oklab, ${primary} 55%, oklch(0.25 0.02 245))`);
+    root.style.setProperty("--sidebar-accent-foreground", "oklch(0.99 0 0)");
+    root.style.setProperty("--sidebar-border", `color-mix(in oklab, ${primary} 40%, oklch(0.3 0.02 245))`);
+    root.style.setProperty("--sidebar-primary", primary);
+    root.style.setProperty("--sidebar-primary-foreground", "oklch(0.99 0 0)");
   } else {
     root.style.removeProperty("--primary");
     root.style.removeProperty("--ring");
+    root.style.removeProperty("--sidebar");
+    root.style.removeProperty("--sidebar-foreground");
+    root.style.removeProperty("--sidebar-accent");
+    root.style.removeProperty("--sidebar-accent-foreground");
+    root.style.removeProperty("--sidebar-border");
+    root.style.removeProperty("--sidebar-primary");
+    root.style.removeProperty("--sidebar-primary-foreground");
   }
 
   const accent = t?.theme_accent ? wrap(t.theme_accent) : "";
   if (accent) root.style.setProperty("--accent", accent);
   else root.style.removeProperty("--accent");
+
 
   const mode = t?.theme_mode ?? "system";
   const isDark = mode === "dark"
