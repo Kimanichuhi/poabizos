@@ -168,8 +168,8 @@ function SettingsPage() {
         </div>
       </Card>
 
-      <div className="flex justify-end gap-2 pb-6">
-        <Button onClick={() => save.mutate()} disabled={save.isPending}>{save.isPending ? "Saving…" : "Save settings"}</Button>
+      <div className="sticky bottom-0 -mx-3 sm:-mx-4 md:-mx-6 mt-6 px-3 sm:px-4 md:px-6 py-3 bg-background/95 backdrop-blur border-t flex justify-end gap-2 z-20">
+        <Button onClick={() => save.mutate()} disabled={save.isPending} size="lg">{save.isPending ? "Saving…" : "Save settings"}</Button>
       </div>
     </div>
   );
