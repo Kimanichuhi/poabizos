@@ -27,6 +27,50 @@ const THEME_PRESETS: { label: string; primary: string; accent: string }[] = [
 
 const CURRENCIES = ["KES", "USD", "EUR", "GBP", "UGX", "TZS", "NGN", "ZAR"];
 
+function hexToHslTriple(hex: string): string {
+  const m = hex.replace("#", "");
+  if (m.length !== 6) return "";
+  const r = parseInt(m.slice(0, 2), 16) / 255;
+  const g = parseInt(m.slice(2, 4), 16) / 255;
+  const b = parseInt(m.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0; const l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+}
+
+function hslToHex(triple?: string | null): string {
+  if (!triple) return "";
+  const m = triple.trim().match(/^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%\s+(\d+(?:\.\d+)?)%$/);
+  if (!m) return "";
+  const h = parseFloat(m[1]) / 360, s = parseFloat(m[2]) / 100, l = parseFloat(m[3]) / 100;
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1; if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  let r: number, g: number, b: number;
+  if (s === 0) { r = g = b = l; }
+  else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1 / 3);
+  }
+  const to = (x: number) => Math.round(x * 255).toString(16).padStart(2, "0");
+  return `#${to(r)}${to(g)}${to(b)}`;
+}
+
 function SettingsPage() {
   const { tenant, refresh } = useAuth();
   const qc = useQueryClient();
@@ -156,10 +200,34 @@ function SettingsPage() {
             ))}
           </div>
         </div>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div><Label>Primary HSL (H S% L%)</Label><Input className="mt-1.5" value={form.theme_primary ?? ""} onChange={e => set("theme_primary", e.target.value)} placeholder="142 71% 45%" /></div>
-          <div><Label>Accent HSL</Label><Input className="mt-1.5" value={form.theme_accent ?? ""} onChange={e => set("theme_accent", e.target.value)} placeholder="142 60% 96%" /></div>
+        <div className="grid sm:grid-cols-2 gap-3">
           <div>
+            <Label>Primary color</Label>
+            <div className="flex gap-2 mt-1.5">
+              <input
+                type="color"
+                aria-label="Pick primary color"
+                className="h-9 w-14 rounded-md border cursor-pointer bg-background p-1"
+                value={hslToHex(form.theme_primary) || "#22c55e"}
+                onChange={e => set("theme_primary", hexToHslTriple(e.target.value))}
+              />
+              <Input value={form.theme_primary ?? ""} onChange={e => set("theme_primary", e.target.value)} placeholder="142 71% 45%" />
+            </div>
+          </div>
+          <div>
+            <Label>Accent color</Label>
+            <div className="flex gap-2 mt-1.5">
+              <input
+                type="color"
+                aria-label="Pick accent color"
+                className="h-9 w-14 rounded-md border cursor-pointer bg-background p-1"
+                value={hslToHex(form.theme_accent) || "#dcfce7"}
+                onChange={e => set("theme_accent", hexToHslTriple(e.target.value))}
+              />
+              <Input value={form.theme_accent ?? ""} onChange={e => set("theme_accent", e.target.value)} placeholder="142 60% 96%" />
+            </div>
+          </div>
+          <div className="sm:col-span-2">
             <Label>Theme mode</Label>
             <select className="mt-1.5 w-full h-9 px-3 rounded-md border bg-background text-sm" value={form.theme_mode ?? "system"} onChange={e => set("theme_mode", e.target.value)}>
               <option value="system">Match device</option><option value="light">Light</option><option value="dark">Dark</option>
