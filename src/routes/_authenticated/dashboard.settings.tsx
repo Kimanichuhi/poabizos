@@ -156,10 +156,34 @@ function SettingsPage() {
             ))}
           </div>
         </div>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <div><Label>Primary HSL (H S% L%)</Label><Input className="mt-1.5" value={form.theme_primary ?? ""} onChange={e => set("theme_primary", e.target.value)} placeholder="142 71% 45%" /></div>
-          <div><Label>Accent HSL</Label><Input className="mt-1.5" value={form.theme_accent ?? ""} onChange={e => set("theme_accent", e.target.value)} placeholder="142 60% 96%" /></div>
+        <div className="grid sm:grid-cols-2 gap-3">
           <div>
+            <Label>Primary color</Label>
+            <div className="flex gap-2 mt-1.5">
+              <input
+                type="color"
+                aria-label="Pick primary color"
+                className="h-9 w-14 rounded-md border cursor-pointer bg-background p-1"
+                value={hslToHex(form.theme_primary) || "#22c55e"}
+                onChange={e => set("theme_primary", hexToHslTriple(e.target.value))}
+              />
+              <Input value={form.theme_primary ?? ""} onChange={e => set("theme_primary", e.target.value)} placeholder="142 71% 45%" />
+            </div>
+          </div>
+          <div>
+            <Label>Accent color</Label>
+            <div className="flex gap-2 mt-1.5">
+              <input
+                type="color"
+                aria-label="Pick accent color"
+                className="h-9 w-14 rounded-md border cursor-pointer bg-background p-1"
+                value={hslToHex(form.theme_accent) || "#dcfce7"}
+                onChange={e => set("theme_accent", hexToHslTriple(e.target.value))}
+              />
+              <Input value={form.theme_accent ?? ""} onChange={e => set("theme_accent", e.target.value)} placeholder="142 60% 96%" />
+            </div>
+          </div>
+          <div className="sm:col-span-2">
             <Label>Theme mode</Label>
             <select className="mt-1.5 w-full h-9 px-3 rounded-md border bg-background text-sm" value={form.theme_mode ?? "system"} onChange={e => set("theme_mode", e.target.value)}>
               <option value="system">Match device</option><option value="light">Light</option><option value="dark">Dark</option>
