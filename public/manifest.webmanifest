@@ -1,6 +1,6 @@
 {
-  "name": "poaBiz OS",
-  "short_name": "poaBiz",
+  "name": "PoaBiz OS",
+  "short_name": "PoaBiz",
   "description": "Multi-business operations platform — sales, expenses, inventory, payroll and more.",
   "start_url": "/dashboard",
   "scope": "/",
