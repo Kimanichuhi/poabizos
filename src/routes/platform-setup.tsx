@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/platform-setup")({
-  head: () => ({ meta: [{ title: "Platform setup · Opswise" }] }),
+  head: () => ({ meta: [{ title: "Platform setup · PoaBiz OS" }] }),
   component: PlatformSetup,
 });
 

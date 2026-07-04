@@ -68,9 +68,9 @@ export function InstallBanner() {
   return (
     <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-50">
       <div className="bg-card border rounded-xl shadow-lg p-4 flex items-start gap-3">
-        <img src={logoUrl} alt="poaBiz OS" className="h-12 w-12 rounded-lg flex-shrink-0" />
+        <img src={logoUrl} alt="PoaBiz OS" className="h-12 w-12 rounded-lg flex-shrink-0" />
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-sm">Install poaBiz OS</div>
+          <div className="font-semibold text-sm">Install PoaBiz OS</div>
           <p className="text-xs text-muted-foreground mt-0.5">
             {iosHint && !prompt
               ? "Tap Share, then 'Add to Home Screen' to install."

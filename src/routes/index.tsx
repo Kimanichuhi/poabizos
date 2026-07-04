@@ -5,7 +5,7 @@ import { Building2, ShieldCheck, Layers, Users, BarChart3, Sparkles } from "luci
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Opswise — Operations platform for growing SMEs" },
+      { title: "PoaBiz OS — Operations platform for growing SMEs" },
       { name: "description", content: "Sales, inventory, HR, payroll, assets and more — one secure multi-tenant platform for your business." },
     ],
   }),
@@ -19,7 +19,7 @@ function Landing() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-semibold">
             <div className="h-8 w-8 rounded-md bg-primary text-primary-foreground grid place-items-center"><Layers className="h-4 w-4" /></div>
-            Opswise
+            PoaBiz OS
           </Link>
           <div className="flex items-center gap-2">
             <Link to="/auth"><Button variant="ghost" size="sm">Sign in</Button></Link>
@@ -78,8 +78,9 @@ function Landing() {
         </div>
       </section>
 
-      <footer className="border-t py-8 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} Opswise · <Link to="/platform-setup" className="hover:underline">Platform setup</Link>
+      <footer className="border-t py-8 text-center text-sm text-muted-foreground space-y-1">
+        <div>© {new Date().getFullYear()} PoaBiz OS · <Link to="/platform-setup" className="hover:underline">Platform setup</Link></div>
+        <div>Created by Qeem Labs Ltd.</div>
       </footer>
     </div>
   );

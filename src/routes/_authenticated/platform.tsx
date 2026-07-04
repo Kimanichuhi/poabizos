@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShieldCheck, LayoutDashboard, Building, Users, LogOut, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/platform")({
-  head: () => ({ meta: [{ title: "Platform · Opswise" }] }),
+  head: () => ({ meta: [{ title: "Platform · PoaBiz OS" }] }),
   component: PlatformLayout,
 });
 
