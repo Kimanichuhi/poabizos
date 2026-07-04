@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Building2 } from "lucide-react";
 
 export const Route = createFileRoute("/register")({
-  head: () => ({ meta: [{ title: "Register your business · Opswise" }] }),
+  head: () => ({ meta: [{ title: "Register your business · PoaBiz OS" }] }),
   component: RegisterPage,
 });
 

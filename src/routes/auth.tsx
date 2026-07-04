@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Layers } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in · Opswise" }] }),
+  head: () => ({ meta: [{ title: "Sign in · PoaBiz OS" }] }),
   component: AuthPage,
 });
 
