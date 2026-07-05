@@ -14,6 +14,7 @@ import { Route as PlatformSetupRouteImport } from './routes/platform-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiAiAssistantRouteImport } from './routes/api/ai-assistant'
 import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedPlatformIndexRouteImport } from './routes/_authenticated/platform.index'
@@ -65,6 +66,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiAssistantRoute = ApiAiAssistantRouteImport.update({
+  id: '/api/ai-assistant',
+  path: '/api/ai-assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/platform': typeof AuthenticatedPlatformRouteWithChildren
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
   '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/platform-setup': typeof PlatformSetupRoute
   '/register': typeof RegisterRoute
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
   '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
@@ -309,6 +317,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/platform': typeof AuthenticatedPlatformRouteWithChildren
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
   '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
   '/_authenticated/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/_authenticated/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
@@ -345,6 +354,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/dashboard'
     | '/platform'
+    | '/api/ai-assistant'
     | '/dashboard/ai-assistant'
     | '/dashboard/assets'
     | '/dashboard/audit-logs'
@@ -377,6 +387,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/platform-setup'
     | '/register'
+    | '/api/ai-assistant'
     | '/dashboard/ai-assistant'
     | '/dashboard/assets'
     | '/dashboard/audit-logs'
@@ -412,6 +423,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_authenticated/dashboard'
     | '/_authenticated/platform'
+    | '/api/ai-assistant'
     | '/_authenticated/dashboard/ai-assistant'
     | '/_authenticated/dashboard/assets'
     | '/_authenticated/dashboard/audit-logs'
@@ -446,6 +458,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   PlatformSetupRoute: typeof PlatformSetupRoute
   RegisterRoute: typeof RegisterRoute
+  ApiAiAssistantRoute: typeof ApiAiAssistantRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -483,6 +496,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai-assistant': {
+      id: '/api/ai-assistant'
+      path: '/api/ai-assistant'
+      fullPath: '/api/ai-assistant'
+      preLoaderRoute: typeof ApiAiAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/platform': {
@@ -795,6 +815,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   PlatformSetupRoute: PlatformSetupRoute,
   RegisterRoute: RegisterRoute,
+  ApiAiAssistantRoute: ApiAiAssistantRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
