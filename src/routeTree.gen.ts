@@ -43,6 +43,7 @@ import { Route as AuthenticatedDashboardAuditLogsRouteImport } from './routes/_a
 import { Route as AuthenticatedDashboardAssetsRouteImport } from './routes/_authenticated/dashboard.assets'
 import { Route as AuthenticatedDashboardAiAssistantRouteImport } from './routes/_authenticated/dashboard.ai-assistant'
 import { Route as AuthenticatedDashboardInventoryProductIdRouteImport } from './routes/_authenticated/dashboard.inventory.$productId'
+import { Route as AuthenticatedDashboardAiAssistantThreadIdRouteImport } from './routes/_authenticated/dashboard.ai-assistant.$threadId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -239,6 +240,12 @@ const AuthenticatedDashboardInventoryProductIdRoute =
     path: '/$productId',
     getParentRoute: () => AuthenticatedDashboardInventoryRoute,
   } as any)
+const AuthenticatedDashboardAiAssistantThreadIdRoute =
+  AuthenticatedDashboardAiAssistantThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedDashboardAiAssistantRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -248,7 +255,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/platform': typeof AuthenticatedPlatformRouteWithChildren
   '/api/ai-assistant': typeof ApiAiAssistantRoute
-  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -281,7 +289,7 @@ export interface FileRoutesByTo {
   '/platform-setup': typeof PlatformSetupRoute
   '/register': typeof RegisterRoute
   '/api/ai-assistant': typeof ApiAiAssistantRoute
-  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -306,6 +314,7 @@ export interface FileRoutesByTo {
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/platform': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesById {
@@ -318,7 +327,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/platform': typeof AuthenticatedPlatformRouteWithChildren
   '/api/ai-assistant': typeof ApiAiAssistantRoute
-  '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/_authenticated/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/_authenticated/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/_authenticated/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -343,6 +352,7 @@ export interface FileRoutesById {
   '/_authenticated/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/_authenticated/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/_authenticated/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRouteTypes {
@@ -380,6 +390,7 @@ export interface FileRouteTypes {
     | '/platform/tenants'
     | '/dashboard/'
     | '/platform/'
+    | '/dashboard/ai-assistant/$threadId'
     | '/dashboard/inventory/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -413,6 +424,7 @@ export interface FileRouteTypes {
     | '/platform/tenants'
     | '/dashboard'
     | '/platform'
+    | '/dashboard/ai-assistant/$threadId'
     | '/dashboard/inventory/$productId'
   id:
     | '__root__'
@@ -449,6 +461,7 @@ export interface FileRouteTypes {
     | '/_authenticated/platform/tenants'
     | '/_authenticated/dashboard/'
     | '/_authenticated/platform/'
+    | '/_authenticated/dashboard/ai-assistant/$threadId'
     | '/_authenticated/dashboard/inventory/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -701,8 +714,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardInventoryProductIdRouteImport
       parentRoute: typeof AuthenticatedDashboardInventoryRoute
     }
+    '/_authenticated/dashboard/ai-assistant/$threadId': {
+      id: '/_authenticated/dashboard/ai-assistant/$threadId'
+      path: '/$threadId'
+      fullPath: '/dashboard/ai-assistant/$threadId'
+      preLoaderRoute: typeof AuthenticatedDashboardAiAssistantThreadIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAiAssistantRoute
+    }
   }
 }
+
+interface AuthenticatedDashboardAiAssistantRouteChildren {
+  AuthenticatedDashboardAiAssistantThreadIdRoute: typeof AuthenticatedDashboardAiAssistantThreadIdRoute
+}
+
+const AuthenticatedDashboardAiAssistantRouteChildren: AuthenticatedDashboardAiAssistantRouteChildren =
+  {
+    AuthenticatedDashboardAiAssistantThreadIdRoute:
+      AuthenticatedDashboardAiAssistantThreadIdRoute,
+  }
+
+const AuthenticatedDashboardAiAssistantRouteWithChildren =
+  AuthenticatedDashboardAiAssistantRoute._addFileChildren(
+    AuthenticatedDashboardAiAssistantRouteChildren,
+  )
 
 interface AuthenticatedDashboardInventoryRouteChildren {
   AuthenticatedDashboardInventoryProductIdRoute: typeof AuthenticatedDashboardInventoryProductIdRoute
@@ -720,7 +755,7 @@ const AuthenticatedDashboardInventoryRouteWithChildren =
   )
 
 interface AuthenticatedDashboardRouteChildren {
-  AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRoute
+  AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   AuthenticatedDashboardAssetsRoute: typeof AuthenticatedDashboardAssetsRoute
   AuthenticatedDashboardAuditLogsRoute: typeof AuthenticatedDashboardAuditLogsRoute
   AuthenticatedDashboardBranchesRoute: typeof AuthenticatedDashboardBranchesRoute
@@ -747,7 +782,7 @@ interface AuthenticatedDashboardRouteChildren {
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardAiAssistantRoute:
-      AuthenticatedDashboardAiAssistantRoute,
+      AuthenticatedDashboardAiAssistantRouteWithChildren,
     AuthenticatedDashboardAssetsRoute: AuthenticatedDashboardAssetsRoute,
     AuthenticatedDashboardAuditLogsRoute: AuthenticatedDashboardAuditLogsRoute,
     AuthenticatedDashboardBranchesRoute: AuthenticatedDashboardBranchesRoute,
