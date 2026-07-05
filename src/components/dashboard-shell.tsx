@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { MobileNav } from "@/components/mobile-nav";
+import { NotificationBell } from "@/components/notification-bell";
 
 interface NavItem { to: string; label: string; icon: any; feature?: string; anyFeature?: string[]; adminOnly?: boolean; }
 
@@ -117,6 +118,8 @@ export function DashboardShell() {
             {tenant?.logo_url && <img src={tenant.logo_url} alt="" className="h-7 w-7 rounded object-cover md:hidden shrink-0" />}
             <div className="md:hidden font-semibold truncate text-sm">{tenant?.business_name}</div>
           </div>
+          <div className="flex items-center gap-1 shrink-0">
+            <NotificationBell />
           <div className="relative shrink-0">
             <Button variant="ghost" size="sm" onClick={() => setOpen(o => !o)} className="gap-2 px-2">
               <div className="h-7 w-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-semibold shrink-0">
@@ -137,6 +140,7 @@ export function DashboardShell() {
                 ><LogOut className="h-4 w-4" /> Sign out</button>
               </div>
             )}
+          </div>
           </div>
         </header>
         <main className="flex-1 p-3 sm:p-4 md:p-6 overflow-x-hidden">

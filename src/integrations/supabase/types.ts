@@ -14,6 +14,86 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          tenant_id: string
+          thread_id: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          tenant_id?: string
+          thread_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_chat_messages_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_chat_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "ai_chat_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ai_chat_threads: {
+        Row: {
+          created_at: string
+          id: string
+          tenant_id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tenant_id: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tenant_id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_chat_threads_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assets: {
         Row: {
           category: string | null
@@ -396,6 +476,50 @@ export type Database = {
           module?: string | null
         }
         Relationships: []
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: string
+          metadata: Json
+          read_at: string | null
+          tenant_id: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind: string
+          metadata?: Json
+          read_at?: string | null
+          tenant_id?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: string
+          metadata?: Json
+          read_at?: string | null
+          tenant_id?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       package_features: {
         Row: {
@@ -1106,6 +1230,27 @@ export type Database = {
         }
         Relationships: []
       }
+      ui_content: {
+        Row: {
+          key: string
+          updated_at: string
+          updated_by: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          updated_by?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1162,6 +1307,23 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_change_tenant_package: {
+        Args: { _package_code: string; _tenant_id: string }
+        Returns: string
+      }
+      admin_set_package_features: {
+        Args: { _feature_keys: string[]; _package_id: string }
+        Returns: undefined
+      }
+      admin_set_tenant_status: {
+        Args: { _status: string; _tenant_id: string }
+        Returns: undefined
+      }
+      admin_upsert_package: { Args: { _payload: Json }; Returns: string }
+      admin_upsert_ui_content: {
+        Args: { _broadcast?: boolean; _key: string; _value: Json }
+        Returns: undefined
+      }
       bootstrap_super_admin: { Args: never; Returns: boolean }
       change_tenant_package: {
         Args: { _package_code: string }
@@ -1210,6 +1372,7 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      mark_notifications_read: { Args: { _ids: string[] }; Returns: undefined }
       product_profit_history: {
         Args: { _from: string; _product_id: string; _to: string }
         Returns: {

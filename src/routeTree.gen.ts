@@ -14,12 +14,16 @@ import { Route as PlatformSetupRouteImport } from './routes/platform-setup'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiAiAssistantRouteImport } from './routes/api/ai-assistant'
 import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedPlatformIndexRouteImport } from './routes/_authenticated/platform.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedPlatformUiContentRouteImport } from './routes/_authenticated/platform.ui-content'
 import { Route as AuthenticatedPlatformTenantsRouteImport } from './routes/_authenticated/platform.tenants'
+import { Route as AuthenticatedPlatformSubscriptionsRouteImport } from './routes/_authenticated/platform.subscriptions'
 import { Route as AuthenticatedPlatformRequestsRouteImport } from './routes/_authenticated/platform.requests'
+import { Route as AuthenticatedPlatformPackagesRouteImport } from './routes/_authenticated/platform.packages'
 import { Route as AuthenticatedDashboardWhatsappRouteImport } from './routes/_authenticated/dashboard.whatsapp'
 import { Route as AuthenticatedDashboardUsersRouteImport } from './routes/_authenticated/dashboard.users'
 import { Route as AuthenticatedDashboardTasksRouteImport } from './routes/_authenticated/dashboard.tasks'
@@ -42,6 +46,7 @@ import { Route as AuthenticatedDashboardAuditLogsRouteImport } from './routes/_a
 import { Route as AuthenticatedDashboardAssetsRouteImport } from './routes/_authenticated/dashboard.assets'
 import { Route as AuthenticatedDashboardAiAssistantRouteImport } from './routes/_authenticated/dashboard.ai-assistant'
 import { Route as AuthenticatedDashboardInventoryProductIdRouteImport } from './routes/_authenticated/dashboard.inventory.$productId'
+import { Route as AuthenticatedDashboardAiAssistantThreadIdRouteImport } from './routes/_authenticated/dashboard.ai-assistant.$threadId'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -67,6 +72,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAiAssistantRoute = ApiAiAssistantRouteImport.update({
+  id: '/api/ai-assistant',
+  path: '/api/ai-assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
@@ -89,16 +99,34 @@ const AuthenticatedDashboardIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+const AuthenticatedPlatformUiContentRoute =
+  AuthenticatedPlatformUiContentRouteImport.update({
+    id: '/ui-content',
+    path: '/ui-content',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
 const AuthenticatedPlatformTenantsRoute =
   AuthenticatedPlatformTenantsRouteImport.update({
     id: '/tenants',
     path: '/tenants',
     getParentRoute: () => AuthenticatedPlatformRoute,
   } as any)
+const AuthenticatedPlatformSubscriptionsRoute =
+  AuthenticatedPlatformSubscriptionsRouteImport.update({
+    id: '/subscriptions',
+    path: '/subscriptions',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
 const AuthenticatedPlatformRequestsRoute =
   AuthenticatedPlatformRequestsRouteImport.update({
     id: '/requests',
     path: '/requests',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
+const AuthenticatedPlatformPackagesRoute =
+  AuthenticatedPlatformPackagesRouteImport.update({
+    id: '/packages',
+    path: '/packages',
     getParentRoute: () => AuthenticatedPlatformRoute,
   } as any)
 const AuthenticatedDashboardWhatsappRoute =
@@ -233,6 +261,12 @@ const AuthenticatedDashboardInventoryProductIdRoute =
     path: '/$productId',
     getParentRoute: () => AuthenticatedDashboardInventoryRoute,
   } as any)
+const AuthenticatedDashboardAiAssistantThreadIdRoute =
+  AuthenticatedDashboardAiAssistantThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedDashboardAiAssistantRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -241,7 +275,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/platform': typeof AuthenticatedPlatformRouteWithChildren
-  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -262,10 +297,14 @@ export interface FileRoutesByFullPath {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
+  '/platform/ui-content': typeof AuthenticatedPlatformUiContentRoute
   '/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesByTo {
@@ -273,7 +312,8 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/platform-setup': typeof PlatformSetupRoute
   '/register': typeof RegisterRoute
-  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
+  '/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -294,10 +334,14 @@ export interface FileRoutesByTo {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
+  '/platform/ui-content': typeof AuthenticatedPlatformUiContentRoute
   '/dashboard': typeof AuthenticatedDashboardIndexRoute
   '/platform': typeof AuthenticatedPlatformIndexRoute
+  '/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRoutesById {
@@ -309,7 +353,8 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/_authenticated/platform': typeof AuthenticatedPlatformRouteWithChildren
-  '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRoute
+  '/api/ai-assistant': typeof ApiAiAssistantRoute
+  '/_authenticated/dashboard/ai-assistant': typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   '/_authenticated/dashboard/assets': typeof AuthenticatedDashboardAssetsRoute
   '/_authenticated/dashboard/audit-logs': typeof AuthenticatedDashboardAuditLogsRoute
   '/_authenticated/dashboard/branches': typeof AuthenticatedDashboardBranchesRoute
@@ -330,10 +375,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/_authenticated/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/_authenticated/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/_authenticated/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/_authenticated/platform/requests': typeof AuthenticatedPlatformRequestsRoute
+  '/_authenticated/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
   '/_authenticated/platform/tenants': typeof AuthenticatedPlatformTenantsRoute
+  '/_authenticated/platform/ui-content': typeof AuthenticatedPlatformUiContentRoute
   '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
   '/_authenticated/platform/': typeof AuthenticatedPlatformIndexRoute
+  '/_authenticated/dashboard/ai-assistant/$threadId': typeof AuthenticatedDashboardAiAssistantThreadIdRoute
   '/_authenticated/dashboard/inventory/$productId': typeof AuthenticatedDashboardInventoryProductIdRoute
 }
 export interface FileRouteTypes {
@@ -345,6 +394,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/dashboard'
     | '/platform'
+    | '/api/ai-assistant'
     | '/dashboard/ai-assistant'
     | '/dashboard/assets'
     | '/dashboard/audit-logs'
@@ -366,10 +416,14 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/packages'
     | '/platform/requests'
+    | '/platform/subscriptions'
     | '/platform/tenants'
+    | '/platform/ui-content'
     | '/dashboard/'
     | '/platform/'
+    | '/dashboard/ai-assistant/$threadId'
     | '/dashboard/inventory/$productId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -377,6 +431,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/platform-setup'
     | '/register'
+    | '/api/ai-assistant'
     | '/dashboard/ai-assistant'
     | '/dashboard/assets'
     | '/dashboard/audit-logs'
@@ -398,10 +453,14 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/packages'
     | '/platform/requests'
+    | '/platform/subscriptions'
     | '/platform/tenants'
+    | '/platform/ui-content'
     | '/dashboard'
     | '/platform'
+    | '/dashboard/ai-assistant/$threadId'
     | '/dashboard/inventory/$productId'
   id:
     | '__root__'
@@ -412,6 +471,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_authenticated/dashboard'
     | '/_authenticated/platform'
+    | '/api/ai-assistant'
     | '/_authenticated/dashboard/ai-assistant'
     | '/_authenticated/dashboard/assets'
     | '/_authenticated/dashboard/audit-logs'
@@ -433,10 +493,14 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/tasks'
     | '/_authenticated/dashboard/users'
     | '/_authenticated/dashboard/whatsapp'
+    | '/_authenticated/platform/packages'
     | '/_authenticated/platform/requests'
+    | '/_authenticated/platform/subscriptions'
     | '/_authenticated/platform/tenants'
+    | '/_authenticated/platform/ui-content'
     | '/_authenticated/dashboard/'
     | '/_authenticated/platform/'
+    | '/_authenticated/dashboard/ai-assistant/$threadId'
     | '/_authenticated/dashboard/inventory/$productId'
   fileRoutesById: FileRoutesById
 }
@@ -446,6 +510,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   PlatformSetupRoute: typeof PlatformSetupRoute
   RegisterRoute: typeof RegisterRoute
+  ApiAiAssistantRoute: typeof ApiAiAssistantRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -485,6 +550,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai-assistant': {
+      id: '/api/ai-assistant'
+      path: '/api/ai-assistant'
+      fullPath: '/api/ai-assistant'
+      preLoaderRoute: typeof ApiAiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/platform': {
       id: '/_authenticated/platform'
       path: '/platform'
@@ -513,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
       parentRoute: typeof AuthenticatedDashboardRoute
     }
+    '/_authenticated/platform/ui-content': {
+      id: '/_authenticated/platform/ui-content'
+      path: '/ui-content'
+      fullPath: '/platform/ui-content'
+      preLoaderRoute: typeof AuthenticatedPlatformUiContentRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
     '/_authenticated/platform/tenants': {
       id: '/_authenticated/platform/tenants'
       path: '/tenants'
@@ -520,11 +599,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPlatformTenantsRouteImport
       parentRoute: typeof AuthenticatedPlatformRoute
     }
+    '/_authenticated/platform/subscriptions': {
+      id: '/_authenticated/platform/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/platform/subscriptions'
+      preLoaderRoute: typeof AuthenticatedPlatformSubscriptionsRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
     '/_authenticated/platform/requests': {
       id: '/_authenticated/platform/requests'
       path: '/requests'
       fullPath: '/platform/requests'
       preLoaderRoute: typeof AuthenticatedPlatformRequestsRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
+    '/_authenticated/platform/packages': {
+      id: '/_authenticated/platform/packages'
+      path: '/packages'
+      fullPath: '/platform/packages'
+      preLoaderRoute: typeof AuthenticatedPlatformPackagesRouteImport
       parentRoute: typeof AuthenticatedPlatformRoute
     }
     '/_authenticated/dashboard/whatsapp': {
@@ -681,8 +774,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardInventoryProductIdRouteImport
       parentRoute: typeof AuthenticatedDashboardInventoryRoute
     }
+    '/_authenticated/dashboard/ai-assistant/$threadId': {
+      id: '/_authenticated/dashboard/ai-assistant/$threadId'
+      path: '/$threadId'
+      fullPath: '/dashboard/ai-assistant/$threadId'
+      preLoaderRoute: typeof AuthenticatedDashboardAiAssistantThreadIdRouteImport
+      parentRoute: typeof AuthenticatedDashboardAiAssistantRoute
+    }
   }
 }
+
+interface AuthenticatedDashboardAiAssistantRouteChildren {
+  AuthenticatedDashboardAiAssistantThreadIdRoute: typeof AuthenticatedDashboardAiAssistantThreadIdRoute
+}
+
+const AuthenticatedDashboardAiAssistantRouteChildren: AuthenticatedDashboardAiAssistantRouteChildren =
+  {
+    AuthenticatedDashboardAiAssistantThreadIdRoute:
+      AuthenticatedDashboardAiAssistantThreadIdRoute,
+  }
+
+const AuthenticatedDashboardAiAssistantRouteWithChildren =
+  AuthenticatedDashboardAiAssistantRoute._addFileChildren(
+    AuthenticatedDashboardAiAssistantRouteChildren,
+  )
 
 interface AuthenticatedDashboardInventoryRouteChildren {
   AuthenticatedDashboardInventoryProductIdRoute: typeof AuthenticatedDashboardInventoryProductIdRoute
@@ -700,7 +815,7 @@ const AuthenticatedDashboardInventoryRouteWithChildren =
   )
 
 interface AuthenticatedDashboardRouteChildren {
-  AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRoute
+  AuthenticatedDashboardAiAssistantRoute: typeof AuthenticatedDashboardAiAssistantRouteWithChildren
   AuthenticatedDashboardAssetsRoute: typeof AuthenticatedDashboardAssetsRoute
   AuthenticatedDashboardAuditLogsRoute: typeof AuthenticatedDashboardAuditLogsRoute
   AuthenticatedDashboardBranchesRoute: typeof AuthenticatedDashboardBranchesRoute
@@ -727,7 +842,7 @@ interface AuthenticatedDashboardRouteChildren {
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardAiAssistantRoute:
-      AuthenticatedDashboardAiAssistantRoute,
+      AuthenticatedDashboardAiAssistantRouteWithChildren,
     AuthenticatedDashboardAssetsRoute: AuthenticatedDashboardAssetsRoute,
     AuthenticatedDashboardAuditLogsRoute: AuthenticatedDashboardAuditLogsRoute,
     AuthenticatedDashboardBranchesRoute: AuthenticatedDashboardBranchesRoute,
@@ -760,14 +875,21 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedPlatformRouteChildren {
+  AuthenticatedPlatformPackagesRoute: typeof AuthenticatedPlatformPackagesRoute
   AuthenticatedPlatformRequestsRoute: typeof AuthenticatedPlatformRequestsRoute
+  AuthenticatedPlatformSubscriptionsRoute: typeof AuthenticatedPlatformSubscriptionsRoute
   AuthenticatedPlatformTenantsRoute: typeof AuthenticatedPlatformTenantsRoute
+  AuthenticatedPlatformUiContentRoute: typeof AuthenticatedPlatformUiContentRoute
   AuthenticatedPlatformIndexRoute: typeof AuthenticatedPlatformIndexRoute
 }
 
 const AuthenticatedPlatformRouteChildren: AuthenticatedPlatformRouteChildren = {
+  AuthenticatedPlatformPackagesRoute: AuthenticatedPlatformPackagesRoute,
   AuthenticatedPlatformRequestsRoute: AuthenticatedPlatformRequestsRoute,
+  AuthenticatedPlatformSubscriptionsRoute:
+    AuthenticatedPlatformSubscriptionsRoute,
   AuthenticatedPlatformTenantsRoute: AuthenticatedPlatformTenantsRoute,
+  AuthenticatedPlatformUiContentRoute: AuthenticatedPlatformUiContentRoute,
   AuthenticatedPlatformIndexRoute: AuthenticatedPlatformIndexRoute,
 }
 
@@ -795,6 +917,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   PlatformSetupRoute: PlatformSetupRoute,
   RegisterRoute: RegisterRoute,
+  ApiAiAssistantRoute: ApiAiAssistantRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck, LayoutDashboard, Building, Users, LogOut, ArrowLeft } from "lucide-react";
+import { ShieldCheck, LayoutDashboard, Building, Users, LogOut, ArrowLeft, Package, CreditCard, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/platform")({
   head: () => ({ meta: [{ title: "Platform · PoaBiz OS" }] }),
@@ -27,6 +27,9 @@ function PlatformLayout() {
   const items = [
     { to: "/platform", label: "Overview", icon: LayoutDashboard },
     { to: "/platform/tenants", label: "Tenants", icon: Building },
+    { to: "/platform/subscriptions", label: "Subscriptions", icon: CreditCard },
+    { to: "/platform/packages", label: "Packages", icon: Package },
+    { to: "/platform/ui-content", label: "UI Content", icon: FileText },
     { to: "/platform/requests", label: "Registration Requests", icon: Users },
   ];
 
