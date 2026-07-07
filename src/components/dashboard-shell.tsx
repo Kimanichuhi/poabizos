@@ -64,7 +64,9 @@ export function DashboardShell() {
           <div className="flex items-center gap-2">
             {tenant?.logo_url ? (
               <img src={tenant.logo_url} alt="" className="h-8 w-8 rounded object-cover shrink-0" />
-            ) : null}
+            ) : (
+              <PoaBizLogo className="h-8 w-8" />
+            )}
             <div className="min-w-0">
               <div className="text-sm font-semibold truncate">{tenant?.business_name ?? "Workspace"}</div>
               <div className="mt-1 flex items-center gap-2">
