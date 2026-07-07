@@ -18,7 +18,7 @@ function Landing() {
       <header className="border-b bg-card/60 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 font-semibold">
-            <div className="h-8 w-8 rounded-md bg-primary text-primary-foreground grid place-items-center"><Layers className="h-4 w-4" /></div>
+            <PoaBizLogo className="h-9 w-9" />
             PoaBiz OS
           </Link>
           <div className="flex items-center gap-2">
