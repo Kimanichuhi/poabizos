@@ -118,7 +118,9 @@ export function DashboardShell() {
         <header className="h-14 border-b bg-card flex items-center gap-2 justify-between px-3 md:px-6 sticky top-0 z-30">
           <div className="flex items-center gap-2 min-w-0">
             <MobileNav visibleNav={visibleNav} adminNav={visibleAdminNav} showPlatform={isPlatformAdmin} />
-            {tenant?.logo_url && <img src={tenant.logo_url} alt="" className="h-7 w-7 rounded object-cover md:hidden shrink-0" />}
+            {tenant?.logo_url
+              ? <img src={tenant.logo_url} alt="" className="h-7 w-7 rounded object-cover md:hidden shrink-0" />
+              : <PoaBizLogo className="h-7 w-7 md:hidden" />}
             <div className="md:hidden font-semibold truncate text-sm">{tenant?.business_name}</div>
           </div>
           <div className="flex items-center gap-1 shrink-0">
