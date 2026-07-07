@@ -49,7 +49,7 @@ function AuthPage() {
     <div className="min-h-screen grid place-items-center bg-muted/30 px-4">
       <Card className="w-full max-w-md p-6">
         <div className="flex flex-col items-center mb-6">
-          <div className="h-10 w-10 rounded-lg bg-primary text-primary-foreground grid place-items-center mb-3"><Layers className="h-5 w-5" /></div>
+          <PoaBizLogo className="h-12 w-12 mb-3" />
           <h1 className="text-xl font-semibold">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
           <p className="text-sm text-muted-foreground mt-1">{mode === "signin" ? "Sign in to your workspace" : "Sign up, then register your business"}</p>
         </div>
