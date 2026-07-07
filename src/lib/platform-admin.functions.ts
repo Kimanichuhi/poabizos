@@ -125,3 +125,63 @@ export const saveUiContent = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+// ---------- Broadcasts (targeted + all) ----------
+export const listTenantsBrief = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const s: any = context.supabase;
+    await requirePlatformAdmin(s, context.userId);
+    const { data, error } = await s
+      .from("tenants")
+      .select("id, business_name, subscription_status")
+      .order("business_name");
+    if (error) throw new Error(error.message);
+    return { tenants: data ?? [] };
+  });
+
+export const sendBroadcast = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => {
+    const x = d as { title: string; body?: string; tenantIds?: string[] | null };
+    if (!x?.title || !x.title.trim()) throw new Error("Title required");
+    return {
+      title: x.title.trim().slice(0, 160),
+      body: (x.body ?? "").slice(0, 1000),
+      tenantIds: Array.isArray(x.tenantIds) && x.tenantIds.length > 0 ? x.tenantIds : null,
+    };
+  })
+  .handler(async ({ context, data }) => {
+    const s: any = context.supabase;
+    const { data: delivered, error } = await s.rpc("admin_broadcast_notification", {
+      _title: data.title, _body: data.body, _tenant_ids: data.tenantIds,
+    });
+    if (error) throw new Error(error.message);
+    return { delivered: (delivered as number) ?? 0 };
+  });
+
+export const listBroadcasts = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const s: any = context.supabase;
+    await requirePlatformAdmin(s, context.userId);
+    const { data, error } = await s.rpc("admin_list_broadcasts");
+    if (error) throw new Error(error.message);
+    return { broadcasts: data ?? [] };
+  });
+
+export const listBroadcastDelivery = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => {
+    const x = d as { createdAt: string; title: string };
+    if (!x?.createdAt || !x?.title) throw new Error("bad input");
+    return x;
+  })
+  .handler(async ({ context, data }) => {
+    const s: any = context.supabase;
+    const { data: rows, error } = await s.rpc("admin_broadcast_delivery", {
+      _created_at: data.createdAt, _title: data.title,
+    });
+    if (error) throw new Error(error.message);
+    return { rows: rows ?? [] };
+  });
