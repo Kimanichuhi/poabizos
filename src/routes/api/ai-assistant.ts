@@ -153,6 +153,11 @@ export const Route = createFileRoute("/api/ai-assistant")({
                 role: "assistant", content: marked,
               });
               if (error) console.error("[ai-assistant] persist-assistant failed", error.message);
+              supabase.rpc("log_ai_turn", {
+                _tenant_id: tenantId, _thread_id: threadId, _role: "assistant",
+                _length: marked.length, _model: model,
+                _status: partial ? "stopped" : "ok",
+              }).then(({ error }: any) => { if (error) console.error("[ai-assistant] audit assistant", error.message); });
             };
 
             try {
