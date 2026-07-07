@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { MobileNav } from "@/components/mobile-nav";
 import { NotificationBell } from "@/components/notification-bell";
+import { PoaBizLogo } from "@/components/poabiz-logo";
 
 interface NavItem { to: string; label: string; icon: any; feature?: string; anyFeature?: string[]; adminOnly?: boolean; }
 
