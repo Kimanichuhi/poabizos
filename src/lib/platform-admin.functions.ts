@@ -123,6 +123,7 @@ export const saveUiContent = createServerFn({ method: "POST" })
       _broadcast: data.broadcast,
     });
     if (error) throw new Error(error.message);
+    await s.rpc("admin_upsert_ui_content_audit", { _key: data.key, _broadcast: data.broadcast });
     return { ok: true };
   });
 
