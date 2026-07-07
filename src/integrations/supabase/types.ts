@@ -1307,9 +1307,32 @@ export type Database = {
         }
         Returns: undefined
       }
+      admin_broadcast_delivery: {
+        Args: { _created_at: string; _title: string }
+        Returns: {
+          business_name: string
+          delivered_at: string
+          read_at: string
+          tenant_id: string
+        }[]
+      }
+      admin_broadcast_notification: {
+        Args: { _body: string; _tenant_ids?: string[]; _title: string }
+        Returns: number
+      }
       admin_change_tenant_package: {
         Args: { _package_code: string; _tenant_id: string }
         Returns: string
+      }
+      admin_list_broadcasts: {
+        Args: never
+        Returns: {
+          body: string
+          created_at: string
+          read_count: number
+          tenant_count: number
+          title: string
+        }[]
       }
       admin_set_package_features: {
         Args: { _feature_keys: string[]; _package_id: string }
@@ -1322,6 +1345,10 @@ export type Database = {
       admin_upsert_package: { Args: { _payload: Json }; Returns: string }
       admin_upsert_ui_content: {
         Args: { _broadcast?: boolean; _key: string; _value: Json }
+        Returns: undefined
+      }
+      admin_upsert_ui_content_audit: {
+        Args: { _broadcast: boolean; _key: string }
         Returns: undefined
       }
       bootstrap_super_admin: { Args: never; Returns: boolean }
@@ -1372,6 +1399,17 @@ export type Database = {
         Returns: boolean
       }
       is_platform_admin: { Args: { _user_id: string }; Returns: boolean }
+      log_ai_turn: {
+        Args: {
+          _length: number
+          _model?: string
+          _role: string
+          _status?: string
+          _tenant_id: string
+          _thread_id: string
+        }
+        Returns: undefined
+      }
       mark_notifications_read: { Args: { _ids: string[] }; Returns: undefined }
       product_profit_history: {
         Args: { _from: string; _product_id: string; _to: string }
