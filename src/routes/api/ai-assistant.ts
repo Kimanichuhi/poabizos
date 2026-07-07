@@ -87,13 +87,24 @@ export const Route = createFileRoute("/api/ai-assistant")({
         const systemPrompt: ChatMessage = {
           role: "system",
           content:
-            "You are the PoaBiz OS business assistant. Answer only what the user asked, using the live business data below when relevant. " +
-            "Be professional, concise, and specific — cite exact numbers from the data where useful. " +
-            "Never invent numbers. If the data does not contain the answer, say so briefly. " +
-            "Do not use asterisks (`*` or `**`) anywhere in your output. Use plain text or hyphen bullets (`- `) instead. " +
-            "When asked what you can do, list the modules available in this package (shown in the data).\n\n" +
+            "You are the PoaBiz OS business assistant. Follow these rules strictly:\n" +
+            "1. Answer only the exact question asked. No greetings, no sign-offs, no offers of further help, no preamble like 'Sure' or 'Certainly'.\n" +
+            "2. Never add unrelated sections, tips, or summaries the user did not request.\n" +
+            "3. Use only the live business data below when citing numbers. Never invent numbers.\n" +
+            "4. If the answer is not in the data, say so in one short sentence.\n" +
+            "5. Only reference modules/features that appear in the 'Modules available in this package' list. If a user asks about a module not in that list, reply that it is not included in the current package and list what is available.\n" +
+            "6. Do not use asterisks (`*` or `**`) anywhere. Use plain text or hyphen bullets (`- `).\n" +
+            "7. Be professional, concise, and direct.\n\n" +
             "=== Live business data ===\n" + contextBlock,
         };
+
+        const model = "google/gemini-3.1-flash-lite";
+
+        // Log user turn to audit trail (fire-and-forget)
+        supabase.rpc("log_ai_turn", {
+          _tenant_id: tenantId, _thread_id: threadId, _role: "user",
+          _length: lastUser.content.length, _model: model, _status: "ok",
+        }).then(({ error }: any) => { if (error) console.error("[ai-assistant] audit user", error.message); });
 
         // Call Lovable AI Gateway with streaming + abort
         const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -103,7 +114,7 @@ export const Route = createFileRoute("/api/ai-assistant")({
             Authorization: `Bearer ${LOVABLE_API_KEY}`,
           },
           body: JSON.stringify({
-            model: "google/gemini-3-flash-preview",
+            model,
             stream: true,
             messages: [systemPrompt, ...messages.slice(-30).map((m) => ({ role: m.role, content: m.content }))],
           }),
