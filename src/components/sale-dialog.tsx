@@ -307,6 +307,7 @@ export function SaleDialog({ open, onOpenChange }: Props) {
                 <option value="airtel">Airtel Money</option>
                 <option value="bank">Bank</option>
                 <option value="credit">Credit</option>
+                <option value="flutterwave">Flutterwave</option>
               </select>
             </div>
             <div>
