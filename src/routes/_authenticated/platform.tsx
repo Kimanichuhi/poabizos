@@ -30,6 +30,7 @@ function PlatformLayout() {
     { to: "/platform/subscriptions", label: "Subscriptions", icon: CreditCard },
     { to: "/platform/packages", label: "Packages", icon: Package },
     { to: "/platform/ui-content", label: "UI Content", icon: FileText },
+    { to: "/platform/audit-logs", label: "Audit Logs", icon: ScrollText },
     { to: "/platform/requests", label: "Registration Requests", icon: Users },
   ];
 
