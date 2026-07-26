@@ -74,9 +74,19 @@ export async function buildBusinessContext(supabase: any, tenantId: string): Pro
 }
 
 export function sanitizeAiText(text: string): string {
-  // Remove markdown emphasis stars per user preference; keep hyphen bullets.
-  return text
+  let t = text
     .replace(/\*\*(.+?)\*\*/g, "$1")
     .replace(/(^|[^*])\*(?!\s)([^*\n]+?)\*(?!\*)/g, "$1$2")
     .replace(/^\s*\*\s+/gm, "- ");
+  // Strip leading greetings / conversational openers.
+  t = t.replace(
+    /^\s*(sure[,!.]?|certainly[,!.]?|of course[,!.]?|absolutely[,!.]?|hello[,!.]?|hi[,!.]?|hey[,!.]?|greetings[,!.]?|good (morning|afternoon|evening)[,!.]?|thanks for (asking|your question)[,!.]?)\s*/i,
+    "",
+  );
+  // Strip trailing offers of further help.
+  t = t.replace(
+    /\n*\s*(let me know if.*|feel free to ask.*|hope (this|that) helps.*|is there anything else.*|happy to help.*)\s*$/i,
+    "",
+  );
+  return t.trim();
 }
