@@ -24,6 +24,7 @@ import { Route as AuthenticatedPlatformTenantsRouteImport } from './routes/_auth
 import { Route as AuthenticatedPlatformSubscriptionsRouteImport } from './routes/_authenticated/platform.subscriptions'
 import { Route as AuthenticatedPlatformRequestsRouteImport } from './routes/_authenticated/platform.requests'
 import { Route as AuthenticatedPlatformPackagesRouteImport } from './routes/_authenticated/platform.packages'
+import { Route as AuthenticatedPlatformAuditLogsRouteImport } from './routes/_authenticated/platform.audit-logs'
 import { Route as AuthenticatedDashboardWhatsappRouteImport } from './routes/_authenticated/dashboard.whatsapp'
 import { Route as AuthenticatedDashboardUsersRouteImport } from './routes/_authenticated/dashboard.users'
 import { Route as AuthenticatedDashboardTasksRouteImport } from './routes/_authenticated/dashboard.tasks'
@@ -127,6 +128,12 @@ const AuthenticatedPlatformPackagesRoute =
   AuthenticatedPlatformPackagesRouteImport.update({
     id: '/packages',
     path: '/packages',
+    getParentRoute: () => AuthenticatedPlatformRoute,
+  } as any)
+const AuthenticatedPlatformAuditLogsRoute =
+  AuthenticatedPlatformAuditLogsRouteImport.update({
+    id: '/audit-logs',
+    path: '/audit-logs',
     getParentRoute: () => AuthenticatedPlatformRoute,
   } as any)
 const AuthenticatedDashboardWhatsappRoute =
@@ -297,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
   '/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
@@ -334,6 +342,7 @@ export interface FileRoutesByTo {
   '/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
   '/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/platform/requests': typeof AuthenticatedPlatformRequestsRoute
   '/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
@@ -375,6 +384,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/tasks': typeof AuthenticatedDashboardTasksRoute
   '/_authenticated/dashboard/users': typeof AuthenticatedDashboardUsersRoute
   '/_authenticated/dashboard/whatsapp': typeof AuthenticatedDashboardWhatsappRoute
+  '/_authenticated/platform/audit-logs': typeof AuthenticatedPlatformAuditLogsRoute
   '/_authenticated/platform/packages': typeof AuthenticatedPlatformPackagesRoute
   '/_authenticated/platform/requests': typeof AuthenticatedPlatformRequestsRoute
   '/_authenticated/platform/subscriptions': typeof AuthenticatedPlatformSubscriptionsRoute
@@ -416,6 +426,7 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/audit-logs'
     | '/platform/packages'
     | '/platform/requests'
     | '/platform/subscriptions'
@@ -453,6 +464,7 @@ export interface FileRouteTypes {
     | '/dashboard/tasks'
     | '/dashboard/users'
     | '/dashboard/whatsapp'
+    | '/platform/audit-logs'
     | '/platform/packages'
     | '/platform/requests'
     | '/platform/subscriptions'
@@ -493,6 +505,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/tasks'
     | '/_authenticated/dashboard/users'
     | '/_authenticated/dashboard/whatsapp'
+    | '/_authenticated/platform/audit-logs'
     | '/_authenticated/platform/packages'
     | '/_authenticated/platform/requests'
     | '/_authenticated/platform/subscriptions'
@@ -618,6 +631,13 @@ declare module '@tanstack/react-router' {
       path: '/packages'
       fullPath: '/platform/packages'
       preLoaderRoute: typeof AuthenticatedPlatformPackagesRouteImport
+      parentRoute: typeof AuthenticatedPlatformRoute
+    }
+    '/_authenticated/platform/audit-logs': {
+      id: '/_authenticated/platform/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/platform/audit-logs'
+      preLoaderRoute: typeof AuthenticatedPlatformAuditLogsRouteImport
       parentRoute: typeof AuthenticatedPlatformRoute
     }
     '/_authenticated/dashboard/whatsapp': {
@@ -875,6 +895,7 @@ const AuthenticatedDashboardRouteWithChildren =
   )
 
 interface AuthenticatedPlatformRouteChildren {
+  AuthenticatedPlatformAuditLogsRoute: typeof AuthenticatedPlatformAuditLogsRoute
   AuthenticatedPlatformPackagesRoute: typeof AuthenticatedPlatformPackagesRoute
   AuthenticatedPlatformRequestsRoute: typeof AuthenticatedPlatformRequestsRoute
   AuthenticatedPlatformSubscriptionsRoute: typeof AuthenticatedPlatformSubscriptionsRoute
@@ -884,6 +905,7 @@ interface AuthenticatedPlatformRouteChildren {
 }
 
 const AuthenticatedPlatformRouteChildren: AuthenticatedPlatformRouteChildren = {
+  AuthenticatedPlatformAuditLogsRoute: AuthenticatedPlatformAuditLogsRoute,
   AuthenticatedPlatformPackagesRoute: AuthenticatedPlatformPackagesRoute,
   AuthenticatedPlatformRequestsRoute: AuthenticatedPlatformRequestsRoute,
   AuthenticatedPlatformSubscriptionsRoute:
