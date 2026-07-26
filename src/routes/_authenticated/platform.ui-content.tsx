@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2, Plus, Send, Eye, Bell, Users } from "lucide-react";
+import { Loader2, Plus, Send, Eye, Bell, Users, Download } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
@@ -245,6 +245,8 @@ function DeliveryLog() {
   const [openKey, setOpenKey] = useState<string | null>(null);
   const [rows, setRows] = useState<DeliveryRow[]>([]);
   const [loadingRows, setLoadingRows] = useState(false);
+  const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "read" | "unread">("all");
 
   const openDetail = async (b: Broadcast) => {
     const k = `${b.created_at}|${b.title}`;
@@ -257,45 +259,82 @@ function DeliveryLog() {
     setLoadingRows(false);
   };
 
-  const items = (data?.broadcasts ?? []) as Broadcast[];
+  const items = ((data?.broadcasts ?? []) as Broadcast[]).filter(
+    (b) => !q || `${b.title} ${b.body ?? ""}`.toLowerCase().includes(q.toLowerCase()),
+  );
+
+  const filteredRows = rows.filter((r) =>
+    statusFilter === "all" ? true : statusFilter === "read" ? !!r.read_at : !r.read_at,
+  );
+
+  const downloadCsv = (b: Broadcast) => {
+    const esc = (v: any) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+    const header = "tenant_id,business_name,delivered_at,read_at";
+    const body = filteredRows.map((r) =>
+      [r.tenant_id, r.business_name, r.delivered_at, r.read_at ?? ""].map(esc).join(","),
+    ).join("\n");
+    const blob = new Blob([`${header}\n${body}\n`], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `broadcast-${b.title.replace(/[^a-z0-9]+/gi, "-")}.csv`; a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
-    <Card className="p-0 overflow-hidden">
-      <div className="divide-y">
-        {items.length === 0 && <div className="p-6 text-sm text-muted-foreground text-center">No broadcasts sent yet.</div>}
-        {items.map((b) => {
-          const k = `${b.created_at}|${b.title}`;
-          const open = openKey === k;
-          return (
-            <div key={k}>
-              <button onClick={() => openDetail(b)} className="w-full text-left p-3 hover:bg-accent/50 flex items-start gap-3">
-                <Bell className="h-4 w-4 mt-0.5 text-primary" />
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium text-sm">{b.title}</div>
-                  <div className="text-xs text-muted-foreground truncate">{b.body}</div>
-                  <div className="text-[10px] text-muted-foreground mt-1">
-                    {formatDistanceToNow(new Date(b.created_at), { addSuffix: true })} · {b.tenant_count} tenants · {b.read_count} read
-                  </div>
-                </div>
-              </button>
-              {open && (
-                <div className="p-3 bg-muted/30 space-y-1 text-sm">
-                  {loadingRows ? (
-                    <div className="text-muted-foreground text-xs">Loading delivery…</div>
-                  ) : rows.length === 0 ? (
-                    <div className="text-muted-foreground text-xs">No delivery records.</div>
-                  ) : rows.map((r) => (
-                    <div key={r.tenant_id} className="flex items-center justify-between text-xs">
-                      <span className="truncate">{r.business_name}</span>
-                      <span className="text-muted-foreground">{r.read_at ? `Read ${formatDistanceToNow(new Date(r.read_at), { addSuffix: true })}` : "Unread"}</span>
+    <div className="space-y-3">
+      <Card className="p-3 flex flex-wrap items-center gap-2">
+        <Input placeholder="Search broadcasts…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-xs" />
+        <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value as any)} className="h-9 px-3 rounded-md border bg-background text-sm">
+          <option value="all">All recipients</option>
+          <option value="read">Read only</option>
+          <option value="unread">Unread only</option>
+        </select>
+        <div className="text-xs text-muted-foreground ml-auto">{items.length} broadcast(s)</div>
+      </Card>
+
+      <Card className="p-0 overflow-hidden">
+        <div className="divide-y">
+          {items.length === 0 && <div className="p-6 text-sm text-muted-foreground text-center">No broadcasts sent yet.</div>}
+          {items.map((b) => {
+            const k = `${b.created_at}|${b.title}`;
+            const open = openKey === k;
+            const readPct = b.tenant_count ? Math.round((b.read_count / b.tenant_count) * 100) : 0;
+            return (
+              <div key={k}>
+                <button onClick={() => openDetail(b)} className="w-full text-left p-3 hover:bg-accent/50 flex items-start gap-3">
+                  <Bell className="h-4 w-4 mt-0.5 text-primary" />
+                  <div className="flex-1 min-w-0">
+                    <div className="font-medium text-sm">{b.title}</div>
+                    <div className="text-xs text-muted-foreground truncate">{b.body}</div>
+                    <div className="text-[10px] text-muted-foreground mt-1">
+                      {formatDistanceToNow(new Date(b.created_at), { addSuffix: true })} · {b.tenant_count} tenants · {b.read_count} read ({readPct}%)
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    </Card>
+                  </div>
+                </button>
+                {open && (
+                  <div className="p-3 bg-muted/30 space-y-2 text-sm">
+                    <div className="flex justify-end">
+                      <Button size="sm" variant="outline" onClick={() => downloadCsv(b)} className="h-7 text-xs">
+                        <Download className="h-3 w-3 mr-1" /> Export CSV
+                      </Button>
+                    </div>
+                    {loadingRows ? (
+                      <div className="text-muted-foreground text-xs">Loading delivery…</div>
+                    ) : filteredRows.length === 0 ? (
+                      <div className="text-muted-foreground text-xs">No delivery records.</div>
+                    ) : filteredRows.map((r) => (
+                      <div key={r.tenant_id} className="flex items-center justify-between text-xs">
+                        <span className="truncate">{r.business_name}</span>
+                        <span className="text-muted-foreground">{r.read_at ? `Read ${formatDistanceToNow(new Date(r.read_at), { addSuffix: true })}` : "Unread"}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </Card>
+    </div>
   );
 }

@@ -98,7 +98,7 @@ export const Route = createFileRoute("/api/ai-assistant")({
             "=== Live business data ===\n" + contextBlock,
         };
 
-        const model = "google/gemini-3.1-flash-lite";
+        const model = "google/gemini-2.5-flash";
 
         // Log user turn to audit trail (fire-and-forget)
         supabase.rpc("log_ai_turn", {

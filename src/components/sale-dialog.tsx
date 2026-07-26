@@ -191,6 +191,7 @@ export function SaleDialog({ open, onOpenChange }: Props) {
               <option value="credit">Credit Sale</option>
               <option value="mpesa">M-Pesa Sale</option>
               <option value="bank">Bank Payment</option>
+              <option value="flutterwave">Flutterwave</option>
             </select>
           </div>
           <div>
@@ -306,6 +307,7 @@ export function SaleDialog({ open, onOpenChange }: Props) {
                 <option value="airtel">Airtel Money</option>
                 <option value="bank">Bank</option>
                 <option value="credit">Credit</option>
+                <option value="flutterwave">Flutterwave</option>
               </select>
             </div>
             <div>

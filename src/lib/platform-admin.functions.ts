@@ -186,3 +186,31 @@ export const listBroadcastDelivery = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { rows: rows ?? [] };
   });
+
+// ---------- Platform-wide audit logs ----------
+export const listPlatformAuditLogs = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: unknown) => {
+    const x = (d ?? {}) as { from?: string; to?: string; action?: string; tenantId?: string; limit?: number };
+    return {
+      from: x.from ?? new Date(Date.now() - 30 * 86400_000).toISOString().slice(0, 10),
+      to: x.to ?? new Date().toISOString().slice(0, 10),
+      action: x.action ?? null,
+      tenantId: x.tenantId ?? null,
+      limit: Math.min(Math.max(Number(x.limit ?? 500), 1), 2000),
+    };
+  })
+  .handler(async ({ context, data }) => {
+    const s: any = context.supabase;
+    await requirePlatformAdmin(s, context.userId);
+    let q = s.from("audit_logs").select("*")
+      .gte("created_at", `${data.from}T00:00:00`)
+      .lte("created_at", `${data.to}T23:59:59`)
+      .order("created_at", { ascending: false })
+      .limit(data.limit);
+    if (data.action) q = q.eq("action", data.action);
+    if (data.tenantId) q = q.eq("tenant_id", data.tenantId);
+    const { data: rows, error } = await q;
+    if (error) throw new Error(error.message);
+    return { rows: rows ?? [] };
+  });
