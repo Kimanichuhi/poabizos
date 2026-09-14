@@ -41,35 +41,36 @@
 
 :root {
   --radius: 0.625rem;
-  /* Light, professional SaaS palette: slate surfaces + teal primary */
+  /* Brand palette sampled directly from the PoaBiz OS logo: the deep green
+     of the "OS" lettering as primary, the navy of "PoaBiz" for dark surfaces. */
   --background: oklch(0.985 0.005 240);
   --foreground: oklch(0.21 0.035 250);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.21 0.035 250);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.21 0.035 250);
-  --primary: oklch(0.55 0.13 200);
+  --primary: oklch(0.46 0.12 150);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.96 0.01 240);
   --secondary-foreground: oklch(0.25 0.04 250);
   --muted: oklch(0.96 0.01 240);
   --muted-foreground: oklch(0.5 0.025 250);
-  --accent: oklch(0.93 0.04 200);
-  --accent-foreground: oklch(0.28 0.08 220);
+  --accent: oklch(0.93 0.05 150);
+  --accent-foreground: oklch(0.28 0.09 150);
   --destructive: oklch(0.6 0.23 27);
   --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.65 0.16 155);
+  --success: oklch(0.65 0.16 150);
   --success-foreground: oklch(0.99 0 0);
   --warning: oklch(0.78 0.17 80);
   --warning-foreground: oklch(0.2 0.05 80);
   --border: oklch(0.91 0.012 245);
   --input: oklch(0.91 0.012 245);
-  --ring: oklch(0.55 0.13 200);
-  --sidebar: oklch(0.22 0.03 245);
-  --sidebar-foreground: oklch(0.92 0.01 245);
-  --sidebar-accent: oklch(0.3 0.04 245);
+  --ring: oklch(0.46 0.12 150);
+  --sidebar: oklch(0.2 0.06 259);
+  --sidebar-foreground: oklch(0.92 0.01 259);
+  --sidebar-accent: oklch(0.28 0.07 259);
   --sidebar-accent-foreground: oklch(0.99 0 0);
-  --sidebar-border: oklch(0.3 0.03 245);
+  --sidebar-border: oklch(0.28 0.05 259);
 }
 
 @layer base {
